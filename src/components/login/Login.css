@@ -1,0 +1,16 @@
+.wave-blue {
+  fill: blue;
+}
+
+.wave-animation {
+  animation: wave-animation 20s linear infinite;
+}
+
+@keyframes wave-animation {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-1440px);
+  }
+}
