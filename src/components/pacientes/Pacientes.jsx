@@ -30,7 +30,7 @@ const Pacientes = () => {
             placeholder="Default input"
           />
         </div>
-        <div className="overflow-x w-6/12">
+        <div className="overflow-auto md:w-8/12 w-11/12 ">
           <table className="rounded-md shadow-md w-full">
             <thead className="bg-[#333333] border-b">
               <tr>

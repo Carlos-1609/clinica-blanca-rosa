@@ -24,12 +24,6 @@ const NavBar = () => {
           onClick={() => setOpen(!open)}
           className="text-3xl absolute right-8 top-4 cursor-pointer md:hidden"
         >
-          {/* <FontAwesomeIcon
-            icon={open ? "fa-xmark" : "fa-bars"}
-            style={{
-              color: "linear-gradient(to bottom, #7f00ff 0%, #e100ff 100%)",
-            }}
-          /> */}
           <span className=" text-[#7f00ff]">
             <FontAwesomeIcon icon={open ? "fa-xmark" : "fa-bars"} />
           </span>
@@ -37,7 +31,7 @@ const NavBar = () => {
 
         <ul
           className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
-            open ? "top-20 " : "top-[-490px]"
+            open ? "top-20 shadow-md" : "top-[-490px]"
           }`}
         >
           {Links.map((link) => (
@@ -47,7 +41,13 @@ const NavBar = () => {
             >
               <a className="group font-mono transition duration-300">
                 {link.name}
-                <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-purple-600"></span>
+                <span
+                  className={`${
+                    open
+                      ? ""
+                      : "block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-purple-600"
+                  }`}
+                ></span>
               </a>
             </li>
           ))}
