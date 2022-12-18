@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import profileImage from "../../assets/profile.png";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+
   let Links = [
-    { name: "Pacientes", link: "/" },
-    { name: "Paciente", link: "/" },
-    { name: "Consultas", link: "/" },
-    { name: "About", link: "/" },
+    { name: "Pacientes", link: () => navigate("/pacientes") },
+    { name: "Paciente", link: () => navigate("/informacion_paciente") },
+    { name: "Consultas", link: () => navigate("/informacion_paciente") },
+    { name: "About", link: () => navigate("/informacion_paciente") },
   ];
   let [open, setOpen] = useState(false);
   return (
@@ -17,7 +20,7 @@ const NavBar = () => {
           className="font-bold text-2xl cursor-pointer flex items-center font-mono
     text-black"
         >
-          Designer
+          Logo
         </div>
 
         <div
@@ -39,7 +42,10 @@ const NavBar = () => {
               key={link.name}
               className="md:ml-8 text-xl md:my-0 my-5 font-mono"
             >
-              <a className="group font-mono transition duration-300">
+              <a
+                className="group font-mono transition duration-300 cursor-pointer"
+                onClick={link.link}
+              >
                 {link.name}
                 <span
                   className={`${

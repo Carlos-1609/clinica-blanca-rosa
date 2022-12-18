@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/login/Login";
 import RouteError from "./components/route-error/RouteError";
 import Pacientes from "./components/pacientes/Pacientes";
+import InformacionPaciente from "./components/informacion-paciente/InformacionPaciente";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,11 @@ const router = createBrowserRouter([
   {
     path: "/pacientes",
     element: <Pacientes />,
+    errorElement: <RouteError />,
+  },
+  {
+    path: "/informacion_paciente",
+    element: <InformacionPaciente />,
     errorElement: <RouteError />,
   },
 ]);

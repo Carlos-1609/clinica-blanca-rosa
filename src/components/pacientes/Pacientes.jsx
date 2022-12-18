@@ -5,8 +5,8 @@ const Pacientes = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-gradient-to-r bg-white h-screen flex items-center justify-center flex-col">
-        <div className="mb-3 xl:w-96 justify-items-end">
+      <div className=" bg-white h-screen flex items-center justify-center flex-col">
+        <div className="mb-7 xl:w-96 md:mt-10">
           <input
             type="text"
             className="
@@ -27,13 +27,13 @@ const Pacientes = () => {
                 m-0
                 focus:text-gray-700 focus:bg-white focus:border-[#7f00ff] focus:outline-none"
             id="buscarPaciente"
-            placeholder="Default input"
+            placeholder="Paciente"
           />
         </div>
-        <div className="overflow-auto md:w-8/12 w-11/12 ">
-          <table className="rounded-md shadow-md w-full">
-            <thead className="bg-[#333333] border-b">
-              <tr>
+        <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
+          <table className=" w-full mb-0">
+            <thead className="bg-[#333333] border-b ">
+              <tr className="">
                 <th
                   scope="col"
                   className="text-md font-mono text-white px-6 py-4 text-left"
