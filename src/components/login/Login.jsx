@@ -1,5 +1,6 @@
 import React from "react";
 import ImageForm from "../../assets/registration-form.png";
+
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Login = () => {
         <div className="h-36 w-36">
           <img src={ImageForm}></img>
         </div>
+
         <div>
           <h1 className="font-mono text-5xl">Bienvenido</h1>
         </div>

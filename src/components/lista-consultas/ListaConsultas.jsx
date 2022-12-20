@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../ui/NavBar";
 
-const Pacientes = () => {
+const ListaConsultas = () => {
   return (
     <>
       <NavBar />
@@ -38,7 +38,7 @@ const Pacientes = () => {
                   scope="col"
                   className="text-md font-mono text-white px-6 py-4 text-left"
                 >
-                  Identidad
+                  ID Consulta
                 </th>
                 <th
                   scope="col"
@@ -50,37 +50,7 @@ const Pacientes = () => {
                   scope="col"
                   className="text-md font-mono text-white px-6 py-4 text-left"
                 >
-                  Edad
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Sexo
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Telefono
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
                   Fecha
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Email
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Telefono
                 </th>
                 <th
                   scope="col"
@@ -99,10 +69,7 @@ const Pacientes = () => {
                   Mark
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Otto
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @mdo
+                  12-19-2022
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Agregar, Ver, Actualizar
@@ -115,11 +82,9 @@ const Pacientes = () => {
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Jacob
                 </td>
+
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Thornton
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @fat
+                  12-19-2022
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Agregar, Ver, Actualizar
@@ -132,11 +97,9 @@ const Pacientes = () => {
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Mark
                 </td>
+
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Otto
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @mdo
+                  12-19-2022
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Agregar, Ver, Actualizar
@@ -149,11 +112,9 @@ const Pacientes = () => {
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Jacob
                 </td>
+
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Thornton
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @fat
+                  12-19-2022
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   Agregar, Ver, Actualizar
@@ -214,4 +175,4 @@ const Pacientes = () => {
   );
 };
 
-export default Pacientes;
+export default ListaConsultas;

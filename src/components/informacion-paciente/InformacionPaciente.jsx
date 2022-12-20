@@ -11,14 +11,15 @@ registerLocale("es", es);
 
 function InformacionPaciente() {
   const [startDate, setStartDate] = useState(new Date());
+
   return (
     <>
       <NavBar />
       <div className="flex justify-center md:mt-28 mt-20">
         <div className="w-full max-w-4xl mx-10">
           <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4">
-            <h1 className="font-bold text-xl text-center">
-              Informacion General
+            <h1 className="font-bold text-xl text-center mb-2">
+              Información General
             </h1>
             <div className="flex flex-wrap -mx-3 mb-6">
               <FormInput
@@ -115,22 +116,3 @@ function InformacionPaciente() {
 }
 
 export default InformacionPaciente;
-
-{
-  /* <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-  <div>
-    <label
-      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-      htmlFor={props.id}
-    >
-      {props.label}
-    </label>
-    <input
-      className="appearance-none shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
-      id={props.id}
-      type="text"
-      placeholder={props.placeholder}
-    />
-  </div>
-</div>; */
-}

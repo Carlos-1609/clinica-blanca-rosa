@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import profileImage from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
+
+//FontAwesome Imports
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -9,7 +12,7 @@ const NavBar = () => {
   let Links = [
     { name: "Pacientes", link: () => navigate("/pacientes") },
     { name: "Paciente", link: () => navigate("/informacion_paciente") },
-    { name: "Consultas", link: () => navigate("/informacion_paciente") },
+    { name: "Consultas", link: () => navigate("/lista_consultas") },
     { name: "About", link: () => navigate("/informacion_paciente") },
   ];
   let [open, setOpen] = useState(false);
@@ -28,7 +31,7 @@ const NavBar = () => {
           className="text-3xl absolute right-8 top-4 cursor-pointer md:hidden"
         >
           <span className=" text-[#7f00ff]">
-            <FontAwesomeIcon icon={open ? "fa-xmark" : "fa-bars"} />
+            <FontAwesomeIcon icon={open ? faXmark : faBars} />
           </span>
         </div>
 
@@ -40,7 +43,7 @@ const NavBar = () => {
           {Links.map((link) => (
             <li
               key={link.name}
-              className="md:ml-8 text-xl md:my-0 my-5 font-mono"
+              className="md:ml-8 text-lg md:my-0 my-5 font-mono"
             >
               <a
                 className="group font-mono transition duration-300 cursor-pointer"
