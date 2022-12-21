@@ -1,11 +1,15 @@
 import React from "react";
 import NavBar from "../ui/NavBar";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 const Pacientes = () => {
+  const navigate = useNavigate();
   return (
     <>
       <NavBar />
-      <div className=" bg-white h-screen flex items-center justify-center flex-col">
+      <div className="bg-white h-screen flex items-center justify-center flex-col">
         <div className="mb-7 xl:w-96 md:mt-10">
           <input
             type="text"
@@ -105,7 +109,26 @@ const Pacientes = () => {
                   @mdo
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
+                  <div className="flex justify-between ">
+                    <div
+                      className="text-xl text-green-500 cursor-pointer"
+                      onClick={() => navigate("/consulta")}
+                    >
+                      <FontAwesomeIcon icon={faFolderPlus} />
+                    </div>
+                    <div
+                      className="text-xl text-cyan-500 cursor-pointer"
+                      onClick={() => navigate("/informacion_paciente")}
+                    >
+                      <FontAwesomeIcon icon={faEye} />
+                    </div>
+                    <div
+                      className="text-xl text-yellow-500 cursor-pointer"
+                      onClick={() => navigate("/informacion_paciente")}
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr className="bg-white border-b">
@@ -122,7 +145,26 @@ const Pacientes = () => {
                   @fat
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
+                  <div className="flex justify-between ">
+                    <div
+                      className="text-xl text-green-500 cursor-pointer"
+                      onClick={() => navigate("/consulta")}
+                    >
+                      <FontAwesomeIcon icon={faFolderPlus} />
+                    </div>
+                    <div
+                      className="text-xl text-cyan-500 cursor-pointer"
+                      onClick={() => navigate("/informacion_paciente")}
+                    >
+                      <FontAwesomeIcon icon={faEye} />
+                    </div>
+                    <div
+                      className="text-xl text-yellow-500 cursor-pointer"
+                      onClick={() => navigate("/informacion_paciente")}
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr className="bg-[#F9F9F9] border-b">

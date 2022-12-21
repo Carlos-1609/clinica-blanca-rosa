@@ -14,8 +14,7 @@ const Consulta = () => {
           <FontAwesomeIcon
             icon={faXmark}
             onClick={() => {
-              console.log("ALOHA");
-              navigate("/lista_pacientes");
+              navigate("/lista_consultas");
             }}
           />
         </span>

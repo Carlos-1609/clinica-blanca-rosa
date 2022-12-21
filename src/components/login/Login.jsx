@@ -4,7 +4,6 @@ import ImageForm from "../../assets/registration-form.png";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
-
   return (
     <div className="flex flex-col justify-center bg-gradient-to-r from-[#D7E1EC] to-[#FFFFFF] h-screen items-center space-y-9">
       <div className="space-y-9 rounded-lg h-100 bg-white shadow-lg flex flex-col justify-center items-center p-10">

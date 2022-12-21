@@ -25,7 +25,7 @@ const FichaMedica = () => {
             className=""
             onClick={() => {
               console.log("ALOHA");
-              navigate("/pacientes");
+              navigate("/lista_consultas");
             }}
           />
         </span>
@@ -117,10 +117,10 @@ const FichaMedica = () => {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            navigate("/ficha_medica");
+            navigate("/lista_consultas");
           }}
         >
-          Siguiente
+          Guardar
         </button>
       </div>
     </>

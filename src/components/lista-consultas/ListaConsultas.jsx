@@ -1,7 +1,11 @@
 import React from "react";
 import NavBar from "../ui/NavBar";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 const ListaConsultas = () => {
+  const navigate = useNavigate();
   return (
     <>
       <NavBar />
@@ -87,7 +91,20 @@ const ListaConsultas = () => {
                   12-19-2022
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
+                  <div className="flex justify-around ">
+                    <div
+                      className="text-xl text-cyan-500 cursor-pointer"
+                      onClick={() => navigate("/consulta")}
+                    >
+                      <FontAwesomeIcon icon={faEye} />
+                    </div>
+                    <div
+                      className="text-xl text-yellow-500 cursor-pointer"
+                      onClick={() => navigate("/consulta")}
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr className="bg-[#F9F9F9] border-b">
