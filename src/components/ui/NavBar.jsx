@@ -33,7 +33,7 @@ const NavBar = () => {
           className="text-3xl absolute right-8 top-4 cursor-pointer md:hidden"
         >
           <span className=" text-[#7f00ff]">
-            <FontAwesomeIcon icon={open ? faXmark : faBars} />
+            <FontAwesomeIcon className="mt-4" icon={open ? faXmark : faBars} />
           </span>
         </div>
 

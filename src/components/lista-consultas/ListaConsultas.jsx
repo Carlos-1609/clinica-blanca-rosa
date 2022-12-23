@@ -4,14 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
-import Switch from "../ui/Switch";
+import Switcher from "../ui/Switcher";
+
 const ListaConsultas = () => {
   const navigate = useNavigate();
   return (
     <>
       <NavBar />
       <div className=" bg-white h-screen flex items-center justify-center flex-col">
-        <div className="  ">
+        <div className="">
           <div className="mb-7 xl:w-96 md:mt-10 mr-3 ">
             <input
               type="text"
@@ -35,10 +36,6 @@ const ListaConsultas = () => {
               id="buscarPaciente"
               placeholder="Paciente"
             />
-          </div>
-
-          <div className="mb-3">
-            <Switch />
           </div>
         </div>
 
