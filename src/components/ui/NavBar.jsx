@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import profileImage from "../../assets/profile.png";
+import Logo from "../../assets/logo.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //FontAwesome Imports
@@ -7,26 +7,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { startLogout } from "../../store/auth/thunks";
+import { DropDown } from "./DropDown";
 
 const NavBar = () => {
   let [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+
   let links = [
     { name: "Pacientes", path: "/pacientes" },
     { name: "Paciente", path: "/informacion_paciente" },
     { name: "Consultas", path: "/lista_consultas" },
   ];
-  const onLogout = () => {
-    dispatch(startLogout());
-  };
+
   return (
     <div className="shadow-md w-full fixed top-0 left-0">
       <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
         <div
-          className="font-bold text-2xl cursor-pointer flex items-center font-mono
+          className="font-bold flex items-center font-mono
     text-black"
         >
-          Logo
+          <img className="h-14 w-14" src={Logo} />
         </div>
 
         <div
@@ -67,12 +66,7 @@ const NavBar = () => {
               </NavLink>
             </li>
           ))}
-          <div
-            className="mr-2 lg:ml-8 md:ml-8 flex cursor-pointer"
-            onClick={onLogout}
-          >
-            <img className="h-16 w-16" src={profileImage} />
-          </div>
+          <DropDown />
         </ul>
       </div>
     </div>
