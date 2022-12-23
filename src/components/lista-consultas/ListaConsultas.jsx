@@ -91,7 +91,7 @@ const ListaConsultas = () => {
                   12-19-2022
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <div className="flex justify-around ">
+                  <div className="flex gap-10 ">
                     <div
                       className="text-xl text-cyan-500 cursor-pointer"
                       onClick={() => navigate("/consulta")}

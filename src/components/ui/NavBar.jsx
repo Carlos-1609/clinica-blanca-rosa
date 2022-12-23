@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import profileImage from "../../assets/profile.png";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //FontAwesome Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { startLogout } from "../../store/auth/thunks";
 
 const NavBar = () => {
-  const navigate = useNavigate();
-
-  let Links = [
-    { name: "Pacientes", link: () => navigate("/pacientes") },
-    { name: "Paciente", link: () => navigate("/informacion_paciente") },
-    { name: "Consultas", link: () => navigate("/lista_consultas") },
-    { name: "About", link: () => navigate("/informacion_paciente") },
-  ];
   let [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  let links = [
+    { name: "Pacientes", path: "/pacientes" },
+    { name: "Paciente", path: "/informacion_paciente" },
+    { name: "Consultas", path: "/lista_consultas" },
+  ];
+  const onLogout = () => {
+    dispatch(startLogout());
+  };
   return (
     <div className="shadow-md w-full fixed top-0 left-0">
       <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
@@ -37,30 +40,37 @@ const NavBar = () => {
 
         <ul
           className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
-            open ? "top-20 shadow-md" : "top-[-490px]"
+            open ? "top-20 shadow-md md:shadow-none" : "top-[-490px]"
           }`}
         >
-          {Links.map((link) => (
+          {links.map((link) => (
             <li
               key={link.name}
               className="md:ml-8 text-lg md:my-0 my-5 font-mono"
             >
-              <a
-                className="group font-mono transition duration-300 cursor-pointer"
-                onClick={link.link}
+              <NavLink
+                className={({ isActive }) =>
+                  `group font-mono transition duration-300 cursor-pointer ${
+                    isActive ? "text-black font-semibold" : "text-[#969696]"
+                  }`
+                }
+                to={link.path}
               >
                 {link.name}
                 <span
                   className={`${
                     open
                       ? ""
-                      : "block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-purple-600"
+                      : "block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-purple-600 "
                   }`}
                 ></span>
-              </a>
+              </NavLink>
             </li>
           ))}
-          <div className="mr-2 lg:ml-8 md:ml-8 flex">
+          <div
+            className="mr-2 lg:ml-8 md:ml-8 flex cursor-pointer"
+            onClick={onLogout}
+          >
             <img className="h-16 w-16" src={profileImage} />
           </div>
         </ul>

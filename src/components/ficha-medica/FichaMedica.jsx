@@ -104,7 +104,7 @@ const FichaMedica = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end pr-10 pb-5">
+      <div className="flex justify-between pl-10 pr-10 pb-5">
         <button
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-6"
           type="submit"

@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ImageForm from "../../assets/registration-form.png";
 
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { startGoogleSignIn } from "../../store/auth/thunks";
+import { WrapperSpinner } from "../ui/WrapperSpinner";
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.auth);
+
+  const isAuthenticating = useMemo(() => status === "checking", [status]);
+  const onGoogleSingIn = () => {
+    dispatch(startGoogleSignIn());
+    //navigate("/pacientes")
+  };
   return (
     <div className="flex flex-col justify-center bg-gradient-to-r from-[#D7E1EC] to-[#FFFFFF] h-screen items-center space-y-9">
+      {/* <WrapperSpinner  /> */}
       <div className="space-y-9 rounded-lg h-100 bg-white shadow-lg flex flex-col justify-center items-center p-10">
         <div className="h-36 w-36">
           <img src={ImageForm}></img>
@@ -16,9 +28,14 @@ const Login = () => {
         </div>
         <div>
           <button
-            onClick={() => navigate("/pacientes")}
+            disabled={isAuthenticating}
+            onClick={onGoogleSingIn}
             type="button"
-            className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 shadow-md"
+            className={`text-white ${
+              isAuthenticating
+                ? "bg-[#98b5e4]"
+                : "bg-[#4285F4] hover:bg-[#4285F4]/90"
+            }  focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 shadow-md`}
           >
             <svg
               className="mr-2 -ml-1 w-4 h-4"
