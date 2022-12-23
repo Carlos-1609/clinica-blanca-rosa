@@ -1,19 +1,21 @@
 import React from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
-import { faFile, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
+import Switch from "../ui/Switch";
 const ListaConsultas = () => {
   const navigate = useNavigate();
   return (
     <>
       <NavBar />
       <div className=" bg-white h-screen flex items-center justify-center flex-col">
-        <div className="mb-7 xl:w-96 md:mt-10">
-          <input
-            type="text"
-            className="
+        <div className="  ">
+          <div className="mb-7 xl:w-96 md:mt-10 mr-3 ">
+            <input
+              type="text"
+              className="
                 form-control
                 rounded-md
                 shadow-md
@@ -30,10 +32,16 @@ const ListaConsultas = () => {
                 ease-in-out
                 m-0
                 focus:text-gray-700 focus:bg-white focus:border-[#7f00ff] focus:outline-none"
-            id="buscarPaciente"
-            placeholder="Paciente"
-          />
+              id="buscarPaciente"
+              placeholder="Paciente"
+            />
+          </div>
+
+          <div className="mb-3">
+            <Switch />
+          </div>
         </div>
+
         <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
           <table className=" w-full mb-0">
             <thead className="bg-[#333333] border-b ">

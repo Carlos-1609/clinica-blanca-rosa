@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/glasses.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //FontAwesome Imports
@@ -25,7 +25,7 @@ const NavBar = () => {
           className="font-bold flex items-center font-mono
     text-black"
         >
-          <img className="h-14 w-14" src={Logo} />
+          <img className="h-16 w-16" src={Logo} />
         </div>
 
         <div
