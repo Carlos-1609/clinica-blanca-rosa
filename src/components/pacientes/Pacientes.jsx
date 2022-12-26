@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { startLoadingPacientes } from "../../store/pacientes/thunks";
 const Pacientes = () => {
   const navigate = useNavigate();
+  const dispacth = useDispatch();
+  useEffect(() => {
+    dispacth(startLoadingPacientes());
+  }, []);
+
   return (
     <>
       <NavBar />

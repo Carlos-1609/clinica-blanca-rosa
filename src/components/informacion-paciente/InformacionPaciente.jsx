@@ -110,7 +110,7 @@ function InformacionPaciente() {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
                   htmlFor="sexo"
                 >
-                  {formattedDate}
+                  Sexo
                 </label>
                 <select
                   name="sexo"
@@ -170,7 +170,6 @@ function InformacionPaciente() {
                   className="appearance-none shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
                 />
               </div>
-              <h1>{formattedDate}</h1>
               <FormInput
                 id={"ocupacion"}
                 placeholder={"Ocupación"}

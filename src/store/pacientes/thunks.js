@@ -1,6 +1,10 @@
-import { collection, doc, setDoc } from "firebase/firestore/lite";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { addNewEmptyPaciente, creatingNewPaciente } from "./pacientesSlice";
+import {
+  addNewEmptyPaciente,
+  creatingNewPaciente,
+  setPacientes,
+} from "./pacientesSlice";
 
 export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
@@ -32,5 +36,22 @@ export const startNewPaciente = (info) => {
     // dispatch
     // dispatch (newPaciente)
     // dispatch (activarPaciente)
+  };
+};
+
+export const startLoadingPacientes = () => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    console.log("se empezaron a cargar los pacientes");
+    const collectionRef = collection(
+      FirebaseDB,
+      `${uid}/pacientes/informacion-paciente`
+    );
+    const pacientes = [];
+    const docs = await getDocs(collectionRef);
+    docs.forEach((doc) => {
+      pacientes.push({ id: doc.id, ...doc.data() });
+    });
+    dispatch(setPacientes(pacientes));
   };
 };
