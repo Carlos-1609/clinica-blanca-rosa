@@ -33,7 +33,7 @@ const FichaMedica = () => {
       <div>
         <h1 className="font-bold text-xl text-center mt-3">Ficha Medica</h1>
         <div className="flex justify-center ">
-          <div className="w-full max-w-4xl mx-10">
+          <div className="w-full max-w-4xl mx-10 ">
             <div className="flex flex-wrap -mx-3 mb-6">
               <label
                 htmlFor="motivo_consulta"
@@ -48,7 +48,7 @@ const FichaMedica = () => {
                 placeholder="..."
               ></textarea>
             </div>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Agudeza Visual
               </h1>
@@ -59,7 +59,7 @@ const FichaMedica = () => {
                 <FormInput id={"od_pio"} placeholder={"OS"} label={"PIO-OS"} />
               </div>
             </form>
-            <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="flex flex-wrap -mx-3 mb-6 ">
               <label
                 htmlFor="motivo_consulta"
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
@@ -73,7 +73,7 @@ const FichaMedica = () => {
                 placeholder="..."
               ></textarea>
             </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="flex flex-wrap -mx-3 mb-6 ">
               <label
                 htmlFor="motivo_consulta"
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
@@ -87,7 +87,7 @@ const FichaMedica = () => {
                 placeholder="..."
               ></textarea>
             </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="flex flex-wrap -mx-3 mb-6 ">
               <label
                 htmlFor="motivo_consulta"
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "

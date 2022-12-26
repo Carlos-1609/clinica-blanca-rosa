@@ -75,7 +75,7 @@ const ListaConsultas = () => {
                   1
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Mark
+                  Carlos Alberto Ordoñez Aguero
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                   12-19-2022

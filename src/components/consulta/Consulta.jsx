@@ -39,7 +39,7 @@ const Consulta = () => {
                 placeholder="..."
               ></textarea>
             </div>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Antecedentes
               </h1>
@@ -64,7 +64,7 @@ const Consulta = () => {
                 <FormInput id={"otros"} placeholder={"Otros"} label={"Otros"} />
               </div>
             </form>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Agudeza Visual
               </h1>
@@ -114,7 +114,7 @@ const Consulta = () => {
                 />
               </div>
             </form>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Lensometria
               </h1>
@@ -128,7 +128,7 @@ const Consulta = () => {
                 />
               </div>
             </form>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Auto retracto metro / objetiva
               </h1>
@@ -137,7 +137,7 @@ const Consulta = () => {
                 <FormInput id={"os_ret"} placeholder={"OS"} label={"OS"} />
               </div>
             </form>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Subjetiva
               </h1>
@@ -147,7 +147,7 @@ const Consulta = () => {
                 <FormInput id={"ad_sub"} placeholder={"AD"} label={"AD"} />
               </div>
             </form>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
                 Keratometria
               </h1>
