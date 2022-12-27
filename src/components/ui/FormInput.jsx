@@ -10,13 +10,16 @@ export default function FormInput(props) {
         {props.label}
       </label>
       <input
-        className="appearance-none  shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+        className={`appearance-none  shadow block w-full ${
+          !props.disabled ? "bg-white" : "bg-gray-200"
+        } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
         name={props.name}
         id={props.id}
         type="text"
         placeholder={props.placeholder}
         onChange={props.onChange}
         value={props.value}
+        disabled={props.disabled}
       />
     </div>
   );

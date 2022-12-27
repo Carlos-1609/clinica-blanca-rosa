@@ -6,6 +6,7 @@ export const pacientesSlice = createSlice({
     isSaving: false,
     messageSaved: "",
     pacientes: [],
+    activePaciente: null,
   },
   reducers: {
     creatingNewPaciente: (state) => {
@@ -15,7 +16,9 @@ export const pacientesSlice = createSlice({
       state.isSaving = false;
       state.pacientes.push(action.payload);
     },
-    setActivePaciente: (state, action) => {},
+    setActivePaciente: (state, action) => {
+      state.activePaciente = action.payload;
+    },
     setPacientes: (state, action) => {
       state.pacientes = action.payload;
     },

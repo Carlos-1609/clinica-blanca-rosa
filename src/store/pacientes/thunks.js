@@ -3,6 +3,7 @@ import { FirebaseDB } from "../../firebase/config";
 import {
   addNewEmptyPaciente,
   creatingNewPaciente,
+  setActivePaciente,
   setPacientes,
 } from "./pacientesSlice";
 
@@ -53,5 +54,21 @@ export const startLoadingPacientes = () => {
       pacientes.push({ id: doc.id, ...doc.data() });
     });
     dispatch(setPacientes(pacientes));
+  };
+};
+
+export const startUpdatePaciente = (updatedPaciente) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+
+    const pacienteToFireStore = { ...updatedPaciente };
+    delete pacienteToFireStore.id;
+
+    const docRef = doc(
+      FirebaseDB,
+      `${uid}/pacientes/informacion-paciente/${updatedPaciente.id}`
+    );
+    await setDoc(docRef, pacienteToFireStore, { merge: true });
+    dispatch(setActivePaciente(null));
   };
 };

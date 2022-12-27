@@ -1,37 +1,32 @@
-import React, { useState } from "react";
-import FormInput from "../ui/FormInput";
-import NavBar from "../ui/NavBar";
-
+import React, { useEffect, useState } from "react";
+import ReactDatePicker from "react-datepicker";
+import { useDispatch, useSelector } from "react-redux";
 //FontAwesome Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImages } from "@fortawesome/free-regular-svg-icons";
+import { faImages, faImage } from "@fortawesome/free-regular-svg-icons";
 import { faFolderPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import FormInput from "./FormInput";
+import {
+  startLoadingPacientes,
+  startUpdatePaciente,
+} from "../../store/pacientes/thunks";
 
-//Date Picker Imports
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from "react-datepicker";
-import { parseISO, format } from "date-fns";
-import es from "date-fns/locale/es";
-import { useDispatch, useSelector } from "react-redux";
-import { startNewPaciente } from "../../store/pacientes/thunks";
-
-const initialValues = {
-  identidad: "",
-  nombre: "",
-  edad: "",
-  sexo: "",
-  escolaridad: "",
-  domicilio: "",
-  telefono: "",
-  referido: "",
-  fecha: new Date().toLocaleDateString("es-es"),
-  ocupacion: "",
-  email: "",
-  imageUrls: [],
-};
-
-function InformacionPaciente() {
+export const PacienteDialog = (props) => {
+  const initialValues = {
+    id: props.activePaciente.id,
+    identidad: props.activePaciente.identidad,
+    nombre: props.activePaciente.nombre,
+    edad: props.activePaciente.edad,
+    sexo: props.activePaciente.sexo,
+    escolaridad: props.activePaciente.escolaridad,
+    domicilio: props.activePaciente.domicilio,
+    telefono: props.activePaciente.telefono,
+    referido: props.activePaciente.referido,
+    fecha: props.activePaciente.fecha,
+    ocupacion: props.activePaciente.ocupacion,
+    email: props.activePaciente.email,
+    imageUrls: [...props.activePaciente.imageUrls],
+  };
   const [startDate, setStartDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -64,17 +59,21 @@ function InformacionPaciente() {
     }
   };
 
-  const onClickNewPaciente = (e) => {
+  const onClickUpdatePaciente = (e) => {
     e.preventDefault();
-    dispatch(startNewPaciente({ values, formattedDate }));
+    dispatch(startUpdatePaciente(values));
+    props.setShowDialog(false);
+    dispatch(startLoadingPacientes());
+    //dispatch(startNewPaciente({ values, formattedDate }));
   };
+
+  useEffect(() => {}, []);
 
   return (
     <>
-      <NavBar />
-      <div className="flex justify-center md:mt-28 mt-20">
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
         <div className="w-full max-w-4xl mx-10">
-          <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 mt-8 border">
+          <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10 mt-[600px] border ">
             <h1 className="font-bold text-xl text-center mb-2">
               Datos del Paciente
             </h1>
@@ -87,6 +86,7 @@ function InformacionPaciente() {
                 label={"Identidad"}
                 value={values.identidad}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
 
               <FormInput
@@ -96,6 +96,7 @@ function InformacionPaciente() {
                 label={"Nombre"}
                 value={values.nombre}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
               <FormInput
                 id={"edad"}
@@ -104,6 +105,7 @@ function InformacionPaciente() {
                 label={"Edad"}
                 value={values.edad}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
                 <label
@@ -113,15 +115,15 @@ function InformacionPaciente() {
                   Sexo
                 </label>
                 <select
+                  disabled={props.isEditable}
                   name="sexo"
-                  className="appearance-none uppercase shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                  className={`appearance-none uppercase shadow block w-full ${
+                    !props.isEditable ? "bg-white" : "bg-gray-200"
+                  } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                   id="sexo"
-                  defaultValue={"DEFAULT"}
+                  defaultValue={values.sexo}
                   onChange={onHandleSexoInputChange}
                 >
-                  <option value="DEFAULT" disabled>
-                    Seleccione Sexo
-                  </option>
                   <option>Masculino</option>
                   <option>Femenino</option>
                   <option>Otro</option>
@@ -134,8 +136,10 @@ function InformacionPaciente() {
                 label={"Escolaridad"}
                 value={values.escolaridad}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
               <FormInput
+                disabled={props.isEditable}
                 id={"domicilio"}
                 name={"domicilio"}
                 placeholder={"Domicilio"}
@@ -144,6 +148,7 @@ function InformacionPaciente() {
                 onChange={onHandleInputChange}
               />
               <FormInput
+                disabled={props.isEditable}
                 id={"telefono"}
                 name={"telefono"}
                 placeholder={"Teléfono"}
@@ -158,16 +163,20 @@ function InformacionPaciente() {
                 label={"Referido Por"}
                 value={values.referido}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2">
                   Fecha
                 </label>
                 <ReactDatePicker
+                  disabled={props.isEditable}
                   dateFormat={"dd/MM/yyyy"}
                   selected={startDate}
                   onChange={onHandleFechaChange}
-                  className="appearance-none shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                  className={`appearance-none shadow block w-full  ${
+                    !props.isEditable ? "bg-white" : "bg-gray-200"
+                  } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                 />
               </div>
               <FormInput
@@ -177,6 +186,7 @@ function InformacionPaciente() {
                 label={"Ocupación"}
                 value={values.ocupacion}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
               <FormInput
                 id={"email"}
@@ -185,6 +195,7 @@ function InformacionPaciente() {
                 label={"E-mail"}
                 value={values.email}
                 onChange={onHandleInputChange}
+                disabled={props.isEditable}
               />
             </div>
             <div
@@ -196,21 +207,22 @@ function InformacionPaciente() {
             <div className="flex items-center justify-between">
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-                onClick={(e) => e.preventDefault()}
+                onClick={() => props.setShowDialog(false)}
               >
                 Cancelar
               </button>
-              <button
-                disabled={isSaving}
-                className={`${
-                  isSaving ? "bg-[#98b5e4]" : "bg-blue-500 hover:bg-blue-700"
-                } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                type="submit"
-                onClick={onClickNewPaciente}
-              >
-                Guardar
-              </button>
+              {props.isEditable ? null : (
+                <button
+                  disabled={isSaving}
+                  className={`${
+                    isSaving ? "bg-[#98b5e4]" : "bg-blue-500 hover:bg-blue-700"
+                  } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+                  type="submit"
+                  onClick={onClickUpdatePaciente}
+                >
+                  Guardar
+                </button>
+              )}
             </div>
           </form>
         </div>
@@ -219,7 +231,7 @@ function InformacionPaciente() {
         <>
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
             <div className="w-full max-w-4xl mx-10">
-              <div className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10  border ">
+              <div className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10 mt-[600px]  border ">
                 <h1 className="font-bold text-xl text-center mb-2">
                   Imagenes del paciente
                 </h1>
@@ -269,6 +281,12 @@ function InformacionPaciente() {
                     ></input>
                   </form>
                 </div>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="rounded-full bg-red-500 h-16 w-16 text-3xl fixed bottom-4 left-4"
+                >
+                  <FontAwesomeIcon color="white" icon={faXmark} />
+                </button>
               </div>
             </div>
           </div>
@@ -276,6 +294,4 @@ function InformacionPaciente() {
       ) : null}
     </>
   );
-}
-
-export default InformacionPaciente;
+};

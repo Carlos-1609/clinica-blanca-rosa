@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import patientRecord from "../../assets/medicalrecords.png";
 import { useLoadPacientes } from "../../hooks/useLoadPacientes";
 import debounce from "lodash.debounce";
+import { setActivePaciente } from "../../store/pacientes/pacientesSlice";
+import { PacienteDialog } from "../ui/PacienteDialog";
 
 const Pacientes = () => {
-  const { pacientes } = useSelector((state) => state.pacientes);
+  const { pacientes, activePaciente } = useSelector((state) => state.pacientes);
+  const [showDialog, setShowDialog] = useState(false);
   const [filteredPacientes, setFilteredPacientes] = useState([]);
-
+  const [isEditable, setIsEditable] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loadPacientes = useLoadPacientes();
@@ -25,8 +28,8 @@ const Pacientes = () => {
   }, [pacientes]);
 
   const searchHandler = debounce((searchValue) => {
-    console.log(searchValue);
-    console.log(pacientes);
+    // console.log(searchValue);
+    // console.log(pacientes);
     let filter = pacientes.filter((paciente) => {
       return paciente.nombre
         .toLowerCase()
@@ -164,19 +167,32 @@ const Pacientes = () => {
                         <div className="flex gap-7 ">
                           <div
                             className="text-xl text-green-500 cursor-pointer"
-                            onClick={() => navigate("/consulta")}
+                            onClick={() => {
+                              dispatch(setActivePaciente(paciente));
+
+                              navigate("/consulta");
+                            }}
                           >
                             <FontAwesomeIcon icon={faFolderPlus} />
                           </div>
                           <div
                             className="text-xl text-cyan-500 cursor-pointer"
-                            onClick={() => navigate("/informacion_paciente")}
+                            onClick={() => {
+                              dispatch(setActivePaciente(paciente));
+                              setIsEditable(true);
+                              setShowDialog(!showDialog);
+                              //navigate("/informacion_paciente");
+                            }}
                           >
                             <FontAwesomeIcon icon={faEye} />
                           </div>
                           <div
                             className="text-xl text-yellow-500 cursor-pointer"
-                            onClick={() => navigate("/informacion_paciente")}
+                            onClick={() => {
+                              dispatch(setActivePaciente(paciente));
+                              setIsEditable(false);
+                              setShowDialog(!showDialog);
+                            }}
                           >
                             <FontAwesomeIcon icon={faPenToSquare} />
                           </div>
@@ -237,6 +253,13 @@ const Pacientes = () => {
           </nav>
         </div>
       </div>
+      {showDialog && (
+        <PacienteDialog
+          setShowDialog={setShowDialog}
+          activePaciente={activePaciente}
+          isEditable={isEditable}
+        />
+      )}
     </>
   );
 };
