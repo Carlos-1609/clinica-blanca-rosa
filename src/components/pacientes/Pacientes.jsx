@@ -1,17 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
-import { faFile, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { startLoadingPacientes } from "../../store/pacientes/thunks";
+import { useDispatch, useSelector } from "react-redux";
+import patientRecord from "../../assets/medicalrecords.png";
+import { useLoadPacientes } from "../../hooks/useLoadPacientes";
+import debounce from "lodash.debounce";
+
 const Pacientes = () => {
+  const { pacientes } = useSelector((state) => state.pacientes);
+  const [filteredPacientes, setFilteredPacientes] = useState([]);
+
   const navigate = useNavigate();
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
+  const loadPacientes = useLoadPacientes();
+
   useEffect(() => {
-    dispacth(startLoadingPacientes());
-  }, []);
+    setFilteredPacientes([...pacientes]);
+    return () => {
+      searchHandler.cancel();
+    };
+  }, [pacientes]);
+
+  const searchHandler = debounce((searchValue) => {
+    console.log(searchValue);
+    console.log(pacientes);
+    let filter = pacientes.filter((paciente) => {
+      return paciente.nombre
+        .toLowerCase()
+        .trim()
+        .includes(searchValue.toLowerCase().trim());
+    });
+    setFilteredPacientes(filter);
+  }, 500);
 
   return (
     <>
@@ -19,6 +42,7 @@ const Pacientes = () => {
       <div className="bg-white h-screen flex items-center justify-center flex-col">
         <div className="mb-7 xl:w-96 md:mt-10">
           <input
+            onChange={(e) => searchHandler(e.target.value)}
             type="text"
             className="
                 form-control
@@ -42,174 +66,128 @@ const Pacientes = () => {
           />
         </div>
         <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
-          <table className=" w-full mb-0">
-            <thead className="bg-[#333333] border-b ">
-              <tr className="">
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Identidad
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Nombre
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Edad
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Sexo
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Telefono
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Fecha
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Email
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Telefono
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Accion
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="bg-[#F9F9F9] border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  1
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Carlos Alberto Ordoñez Aguero
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Otto
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @mdo
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <div className="flex justify-between ">
-                    <div
-                      className="text-xl text-green-500 cursor-pointer"
-                      onClick={() => navigate("/consulta")}
+          {filteredPacientes.length === 0 ? (
+            <div className="flex justify-center flex-col items-center">
+              <div className="h-20 w-20 ">
+                <img src={patientRecord} alt="" />
+              </div>
+              <div className="p-3 font-mono font-bold">
+                <h2>No existen pacientes</h2>
+              </div>
+            </div>
+          ) : (
+            <table className=" w-full mb-0">
+              <thead className="bg-[#333333] border-b ">
+                <tr className="">
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Identidad
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Nombre
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Edad
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Sexo
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Telefono
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Fecha
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Email
+                  </th>
+
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Accion
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPacientes.map((paciente, index) => {
+                  return (
+                    <tr
+                      key={paciente.id}
+                      className={`${
+                        index % 2 === 0 ? "bg-[#F9F9F9]" : "bg-white"
+                      } border-b`}
                     >
-                      <FontAwesomeIcon icon={faFolderPlus} />
-                    </div>
-                    <div
-                      className="text-xl text-cyan-500 cursor-pointer"
-                      onClick={() => navigate("/informacion_paciente")}
-                    >
-                      <FontAwesomeIcon icon={faEye} />
-                    </div>
-                    <div
-                      className="text-xl text-yellow-500 cursor-pointer"
-                      onClick={() => navigate("/informacion_paciente")}
-                    >
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr className="bg-white border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  2
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Jacob
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Thornton
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @fat
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <div className="flex justify-between ">
-                    <div
-                      className="text-xl text-green-500 cursor-pointer"
-                      onClick={() => navigate("/consulta")}
-                    >
-                      <FontAwesomeIcon icon={faFolderPlus} />
-                    </div>
-                    <div
-                      className="text-xl text-cyan-500 cursor-pointer"
-                      onClick={() => navigate("/informacion_paciente")}
-                    >
-                      <FontAwesomeIcon icon={faEye} />
-                    </div>
-                    <div
-                      className="text-xl text-yellow-500 cursor-pointer"
-                      onClick={() => navigate("/informacion_paciente")}
-                    >
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr className="bg-[#F9F9F9] border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  3
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Mark
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Otto
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @mdo
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
-                </td>
-              </tr>
-              <tr className="bg-white border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  4
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Jacob
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Thornton
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  @fat
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {paciente.identidad}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {paciente.nombre}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {paciente.edad}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {paciente.sexo}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {paciente.telefono}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {paciente.fecha}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {paciente.email}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-7 ">
+                          <div
+                            className="text-xl text-green-500 cursor-pointer"
+                            onClick={() => navigate("/consulta")}
+                          >
+                            <FontAwesomeIcon icon={faFolderPlus} />
+                          </div>
+                          <div
+                            className="text-xl text-cyan-500 cursor-pointer"
+                            onClick={() => navigate("/informacion_paciente")}
+                          >
+                            <FontAwesomeIcon icon={faEye} />
+                          </div>
+                          <div
+                            className="text-xl text-yellow-500 cursor-pointer"
+                            onClick={() => navigate("/informacion_paciente")}
+                          >
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className="flex justify-center mt-10">
           <nav aria-label="Page navigation example">
