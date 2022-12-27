@@ -63,8 +63,6 @@ export const PacienteDialog = (props) => {
     e.preventDefault();
     dispatch(startUpdatePaciente(values));
     props.setShowDialog(false);
-    dispatch(startLoadingPacientes());
-    //dispatch(startNewPaciente({ values, formattedDate }));
   };
 
   useEffect(() => {}, []);

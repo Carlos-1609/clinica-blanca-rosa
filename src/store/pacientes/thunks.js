@@ -5,6 +5,7 @@ import {
   creatingNewPaciente,
   setActivePaciente,
   setPacientes,
+  updatePaciente,
 } from "./pacientesSlice";
 
 export const startNewPaciente = (info) => {
@@ -76,6 +77,7 @@ export const startUpdatePaciente = (updatedPaciente) => {
       );
       await setDoc(docRef, pacienteToFireStore, { merge: true });
       dispatch(setActivePaciente(null));
+      dispatch(updatePaciente(updatedPaciente));
     } catch (error) {
       console.log(error);
     }

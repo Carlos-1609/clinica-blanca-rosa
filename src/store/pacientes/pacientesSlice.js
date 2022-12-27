@@ -23,7 +23,14 @@ export const pacientesSlice = createSlice({
       state.pacientes = action.payload;
     },
     setSavingPaciente: (state, action) => {},
-    updatePaciente: (state, action) => {},
+    updatePaciente: (state, action) => {
+      state.pacientes = state.pacientes.map((paciente) => {
+        if (paciente.id === action.payload.id) {
+          return action.payload;
+        }
+        return paciente;
+      });
+    },
   },
 });
 
