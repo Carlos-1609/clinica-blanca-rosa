@@ -9,66 +9,75 @@ import {
 
 export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
-    console.log("startNewPaciente");
-    dispatch(creatingNewPaciente());
-    const newPaciente = {
-      identidad: info.values.identidad,
-      nombre: info.values.nombre,
-      edad: parseInt(info.values.edad),
-      sexo: info.values.sexo,
-      escolaridad: info.values.escolaridad,
-      domicilio: info.values.domicilio,
-      telefono: info.values.telefono,
-      referido: info.values.referido,
-      fecha: info.formattedDate === "" ? info.values.fecha : info.formattedDate,
-      ocupacion: info.values.ocupacion,
-      email: info.values.email,
-      imageUrls: info.values.imageUrls,
-    };
+    try {
+      console.log("startNewPaciente");
+      dispatch(creatingNewPaciente());
+      const newPaciente = {
+        identidad: info.values.identidad,
+        nombre: info.values.nombre,
+        edad: parseInt(info.values.edad),
+        sexo: info.values.sexo,
+        escolaridad: info.values.escolaridad,
+        domicilio: info.values.domicilio,
+        telefono: info.values.telefono,
+        referido: info.values.referido,
+        fecha:
+          info.formattedDate === "" ? info.values.fecha : info.formattedDate,
+        ocupacion: info.values.ocupacion,
+        email: info.values.email,
+        imageUrls: info.values.imageUrls,
+      };
 
-    console.log(newPaciente);
-    const { uid } = getState().auth;
-    const newDoc = doc(
-      collection(FirebaseDB, `${uid}/pacientes/informacion-paciente`)
-    );
-    const setDocResp = await setDoc(newDoc, newPaciente);
-    dispatch(addNewEmptyPaciente(newPaciente));
-
-    // dispatch
-    // dispatch (newPaciente)
-    // dispatch (activarPaciente)
+      console.log(newPaciente);
+      const { uid } = getState().auth;
+      const newDoc = doc(
+        collection(FirebaseDB, `${uid}/pacientes/informacion-paciente`)
+      );
+      const setDocResp = await setDoc(newDoc, newPaciente);
+      dispatch(addNewEmptyPaciente(newPaciente));
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
 export const startLoadingPacientes = () => {
   return async (dispatch, getState) => {
-    const { uid } = getState().auth;
-    console.log("se empezaron a cargar los pacientes");
-    const collectionRef = collection(
-      FirebaseDB,
-      `${uid}/pacientes/informacion-paciente`
-    );
-    const pacientes = [];
-    const docs = await getDocs(collectionRef);
-    docs.forEach((doc) => {
-      pacientes.push({ id: doc.id, ...doc.data() });
-    });
-    dispatch(setPacientes(pacientes));
+    try {
+      const { uid } = getState().auth;
+      console.log("se empezaron a cargar los pacientes");
+      const collectionRef = collection(
+        FirebaseDB,
+        `${uid}/pacientes/informacion-paciente`
+      );
+      const pacientes = [];
+      const docs = await getDocs(collectionRef);
+      docs.forEach((doc) => {
+        pacientes.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch(setPacientes(pacientes));
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
 export const startUpdatePaciente = (updatedPaciente) => {
   return async (dispatch, getState) => {
-    const { uid } = getState().auth;
+    try {
+      const { uid } = getState().auth;
 
-    const pacienteToFireStore = { ...updatedPaciente };
-    delete pacienteToFireStore.id;
+      const pacienteToFireStore = { ...updatedPaciente };
+      delete pacienteToFireStore.id;
 
-    const docRef = doc(
-      FirebaseDB,
-      `${uid}/pacientes/informacion-paciente/${updatedPaciente.id}`
-    );
-    await setDoc(docRef, pacienteToFireStore, { merge: true });
-    dispatch(setActivePaciente(null));
+      const docRef = doc(
+        FirebaseDB,
+        `${uid}/pacientes/informacion-paciente/${updatedPaciente.id}`
+      );
+      await setDoc(docRef, pacienteToFireStore, { merge: true });
+      dispatch(setActivePaciente(null));
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
