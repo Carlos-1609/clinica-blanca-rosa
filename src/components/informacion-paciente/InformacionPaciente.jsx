@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "../ui/FormInput";
 import NavBar from "../ui/NavBar";
 
 //FontAwesome Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-regular-svg-icons";
-import { faFolderPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFolderPlus,
+  faXmark,
+  faImage,
+} from "@fortawesome/free-solid-svg-icons";
 
 //Date Picker Imports
 import ReactDatePicker from "react-datepicker";
@@ -15,6 +19,7 @@ import { parseISO, format } from "date-fns";
 import es from "date-fns/locale/es";
 import { useDispatch, useSelector } from "react-redux";
 import { startNewPaciente } from "../../store/pacientes/thunks";
+import Swal from "sweetalert2";
 
 const initialValues = {
   identidad: "",
@@ -38,7 +43,7 @@ function InformacionPaciente() {
   const [arrImg, setArrImg] = useState([]);
   const [values, setValues] = useState(initialValues);
   const [sexo, setSexo] = useState("");
-  const { isSaving } = useSelector((state) => state.pacientes);
+  const { isSaving, messageInsert } = useSelector((state) => state.pacientes);
   const dispatch = useDispatch();
 
   const onHandleInputChange = (e) => {
@@ -68,6 +73,12 @@ function InformacionPaciente() {
     e.preventDefault();
     dispatch(startNewPaciente({ values, formattedDate }));
   };
+
+  // useEffect(() => {
+  //   if (messageInsert.length > 0) {
+  //     Swal.fire("Paciente Registrado", messageInsert, "success");
+  //   }
+  // }, [messageInsert]);
 
   return (
     <>
@@ -269,6 +280,12 @@ function InformacionPaciente() {
                     ></input>
                   </form>
                 </div>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="rounded-full bg-red-500 h-16 w-16 text-3xl fixed bottom-4 left-4"
+                >
+                  <FontAwesomeIcon color="white" icon={faXmark} />
+                </button>
               </div>
             </div>
           </div>

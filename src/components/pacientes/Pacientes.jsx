@@ -10,9 +10,13 @@ import { useLoadPacientes } from "../../hooks/useLoadPacientes";
 import debounce from "lodash.debounce";
 import { setActivePaciente } from "../../store/pacientes/pacientesSlice";
 import { PacienteDialog } from "../ui/PacienteDialog";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
 
 const Pacientes = () => {
-  const { pacientes, activePaciente } = useSelector((state) => state.pacientes);
+  const { pacientes, activePaciente, messageSaved } = useSelector(
+    (state) => state.pacientes
+  );
   const [showDialog, setShowDialog] = useState(false);
   const [filteredPacientes, setFilteredPacientes] = useState([]);
   const [isEditable, setIsEditable] = useState(true);
@@ -26,6 +30,12 @@ const Pacientes = () => {
       searchHandler.cancel();
     };
   }, [pacientes]);
+
+  // useEffect(() => {
+  //   if (messageSaved.length > 0) {
+  //     Swal.fire("Paciente Actualizado", messageSaved, "success");
+  //   }
+  // }, [messageSaved]);
 
   const searchHandler = debounce((searchValue) => {
     // console.log(searchValue);

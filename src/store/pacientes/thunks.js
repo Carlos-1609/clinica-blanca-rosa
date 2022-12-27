@@ -35,6 +35,7 @@ export const startNewPaciente = (info) => {
         collection(FirebaseDB, `${uid}/pacientes/informacion-paciente`)
       );
       const setDocResp = await setDoc(newDoc, newPaciente);
+      newPaciente.id = newDoc.id;
       dispatch(addNewEmptyPaciente(newPaciente));
     } catch (error) {
       console.log(error);

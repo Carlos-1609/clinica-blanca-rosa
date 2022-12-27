@@ -6,10 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faImage } from "@fortawesome/free-regular-svg-icons";
 import { faFolderPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import FormInput from "./FormInput";
-import {
-  startLoadingPacientes,
-  startUpdatePaciente,
-} from "../../store/pacientes/thunks";
+import { startUpdatePaciente } from "../../store/pacientes/thunks";
 
 export const PacienteDialog = (props) => {
   const initialValues = {
@@ -64,8 +61,6 @@ export const PacienteDialog = (props) => {
     dispatch(startUpdatePaciente(values));
     props.setShowDialog(false);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <>

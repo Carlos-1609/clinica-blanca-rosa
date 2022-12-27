@@ -24,7 +24,7 @@ const Login = () => {
         </div>
 
         <div>
-          <h1 className="font-mono text-5xl">Bienvenido</h1>
+          <h1 className="font-mono text-3xl">Inicia Sesión en el Sistema</h1>
         </div>
         <div>
           <button
