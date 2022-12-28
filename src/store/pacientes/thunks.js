@@ -1,10 +1,26 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite";
+import {
+  collection,
+  doc,
+  endBefore,
+  getDocs,
+  limit,
+  limitToLast,
+  orderBy,
+  query,
+  setDoc,
+  startAfter,
+} from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import {
+  addCounter,
   addNewEmptyPaciente,
   creatingNewPaciente,
   setActivePaciente,
+  setCounter,
+  setFirstPaciente,
+  setLastPaciente,
   setPacientes,
+  subCounter,
   updatePaciente,
 } from "./pacientesSlice";
 
@@ -43,7 +59,7 @@ export const startNewPaciente = (info) => {
   };
 };
 
-export const startLoadingPacientes = () => {
+export const startLoadingPacientes = (type = "") => {
   return async (dispatch, getState) => {
     try {
       const { uid } = getState().auth;
@@ -52,11 +68,17 @@ export const startLoadingPacientes = () => {
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente`
       );
+      let q = query(collectionRef, orderBy("nombre"), limit(5));
+
       const pacientes = [];
-      const docs = await getDocs(collectionRef);
+      const docs = await getDocs(q);
+      dispatch(setLastPaciente(docs._docs[docs._docs.length - 1]));
+      dispatch(setFirstPaciente(docs._docs[0]));
       docs.forEach((doc) => {
         pacientes.push({ id: doc.id, ...doc.data() });
       });
+      console.log(pacientes);
+      dispatch(setCounter());
       dispatch(setPacientes(pacientes));
     } catch (error) {
       console.log(error);
@@ -79,6 +101,79 @@ export const startUpdatePaciente = (updatedPaciente) => {
       await setDoc(docRef, pacienteToFireStore, { merge: true });
       dispatch(setActivePaciente(null));
       dispatch(updatePaciente(updatedPaciente));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const onNextPacientes = (fn) => {
+  return async (dispatch, getState) => {
+    try {
+      const { uid } = getState().auth;
+      const { lastPaciente, firstPaciente } = getState().pacientes;
+      const collectionRef = collection(
+        FirebaseDB,
+        `${uid}/pacientes/informacion-paciente`
+      );
+      let q = query(
+        collectionRef,
+        orderBy("nombre"),
+        limit(5),
+        startAfter(lastPaciente)
+      );
+
+      const pacientes = [];
+      const docs = await getDocs(q);
+      if (docs._docs.length === 0) {
+        return dispatch(startLoadingPacientes());
+      }
+      // console.log(docs._docs[docs._docs.length - 1]);
+      dispatch(setLastPaciente(docs._docs[docs._docs.length - 1]));
+      dispatch(setFirstPaciente(docs._docs[0]));
+      docs.forEach((doc) => {
+        pacientes.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch(addCounter());
+      dispatch(setPacientes(pacientes));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const onBackPacientes = (fn) => {
+  return async (dispatch, getState) => {
+    try {
+      const { uid } = getState().auth;
+      const { firstPaciente, lastPaciente } = getState().pacientes;
+      const collectionRef = collection(
+        FirebaseDB,
+        `${uid}/pacientes/informacion-paciente`
+      );
+      let q = query(
+        collectionRef,
+        orderBy("nombre"),
+        limitToLast(5),
+        endBefore(firstPaciente)
+      );
+
+      const pacientes = [];
+      const docs = await getDocs(q);
+      console.log(docs);
+      if (docs._docs.length === 0) {
+        console.log("entre al if");
+        return dispatch(startLoadingPacientes());
+      }
+      // console.log(docs._docs[docs._docs.length - 1]);
+      dispatch(setLastPaciente(docs._docs[docs._docs.length - 1]));
+      dispatch(setFirstPaciente(docs._docs[0]));
+      docs.forEach((doc) => {
+        pacientes.push({ id: doc.id, ...doc.data() });
+      });
+      console.log(pacientes);
+      dispatch(subCounter());
+      dispatch(setPacientes(pacientes));
     } catch (error) {
       console.log(error);
     }

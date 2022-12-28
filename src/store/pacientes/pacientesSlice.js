@@ -9,6 +9,9 @@ export const pacientesSlice = createSlice({
     messageSaved: "",
     pacientes: [],
     activePaciente: null,
+    firstPaciente: null,
+    lastPaciente: null,
+    counter: 0,
   },
   reducers: {
     creatingNewPaciente: (state) => {
@@ -41,12 +44,26 @@ export const pacientesSlice = createSlice({
         }
         return paciente;
       });
-      //state.messageSaved = `${action.payload.nombre}, fue actualizado de manera de exitosa`;
       Swal.fire(
         "Paciente Actualizado",
         `${action.payload.nombre}, fue actualizado de manera de exitosa`,
         "success"
       );
+    },
+    setLastPaciente: (state, action) => {
+      state.lastPaciente = action.payload;
+    },
+    setFirstPaciente: (state, action) => {
+      state.firstPaciente = action.payload;
+    },
+    addCounter: (state, action) => {
+      state.counter = state.counter + 1;
+    },
+    subCounter: (state, action) => {
+      state.counter = state.counter - 1;
+    },
+    setCounter: (state, action) => {
+      state.counter = 0;
     },
   },
 });
@@ -59,4 +76,9 @@ export const {
   setSavingPaciente,
   updatePaciente,
   creatingNewPaciente,
+  setLastPaciente,
+  setFirstPaciente,
+  addCounter,
+  subCounter,
+  setCounter,
 } = pacientesSlice.actions;

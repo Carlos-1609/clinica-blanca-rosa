@@ -6,4 +6,8 @@ export const store = configureStore({
     auth: authSlice.reducer,
     pacientes: pacientesSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

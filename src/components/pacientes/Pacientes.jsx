@@ -12,9 +12,14 @@ import { setActivePaciente } from "../../store/pacientes/pacientesSlice";
 import { PacienteDialog } from "../ui/PacienteDialog";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
+import {
+  onBackPacientes,
+  onNextPacientes,
+  startLoadingPacientes,
+} from "../../store/pacientes/thunks";
 
 const Pacientes = () => {
-  const { pacientes, activePaciente, messageSaved } = useSelector(
+  const { pacientes, activePaciente, messageSaved, counter } = useSelector(
     (state) => state.pacientes
   );
   const [showDialog, setShowDialog] = useState(false);
@@ -31,15 +36,7 @@ const Pacientes = () => {
     };
   }, [pacientes]);
 
-  // useEffect(() => {
-  //   if (messageSaved.length > 0) {
-  //     Swal.fire("Paciente Actualizado", messageSaved, "success");
-  //   }
-  // }, [messageSaved]);
-
   const searchHandler = debounce((searchValue) => {
-    // console.log(searchValue);
-    // console.log(pacientes);
     let filter = pacientes.filter((paciente) => {
       return paciente.nombre
         .toLowerCase()
@@ -49,11 +46,15 @@ const Pacientes = () => {
     setFilteredPacientes(filter);
   }, 500);
 
+  // const onNext = (type) => {
+  //   dispatch(startLoadingPacientes(type));
+  // };
+
   return (
     <>
       <NavBar />
       <div className="bg-white h-screen flex items-center justify-center flex-col">
-        <div className="mb-7 xl:w-96 md:mt-10">
+        <div className="mb-7 xl:w-96 md:mt-10 mt-20">
           <input
             onChange={(e) => searchHandler(e.target.value)}
             type="text"
@@ -215,52 +216,28 @@ const Pacientes = () => {
             </table>
           )}
         </div>
-        <div className="flex justify-center mt-10">
-          <nav aria-label="Page navigation example">
-            <ul className="flex list-style-none">
-              <li className="page-item disabled">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-500 pointer-events-none focus:shadow-none"
-                  href="#"
-                  aria-disabled="true"
-                >
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  href="#"
-                >
-                  1
-                </a>
-              </li>
-              <li className="page-item active">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-blue-600 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md"
-                  href="#"
-                >
-                  2 <span className="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  href="#"
-                >
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  href="#"
-                >
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
+        <div className="flex justify-center mt-10 gap-20">
+          <div className="">
+            <button
+              disabled={counter <= 0 ? true : false}
+              className={`${
+                counter <= 0
+                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+                  : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+              }`}
+              onClick={() => dispatch(onBackPacientes())}
+            >
+              Anterior
+            </button>
+          </div>
+          <div>
+            <button
+              className="transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff] hover:bg-[#7f00ff] hover:text-white hover:border-white font-semibold"
+              onClick={() => dispatch(onNextPacientes())}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
       {showDialog && (
