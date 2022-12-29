@@ -65,6 +65,9 @@ export const pacientesSlice = createSlice({
     setCounter: (state, action) => {
       state.counter = 0;
     },
+    setSaving: (state, action) => {
+      state.isSaving = true;
+    },
   },
 });
 
@@ -81,4 +84,5 @@ export const {
   addCounter,
   subCounter,
   setCounter,
+  setSaving,
 } = pacientesSlice.actions;

@@ -62,6 +62,7 @@ function InformacionPaciente() {
   };
 
   const imageUploadHandler = (event) => {
+    if (event.target.files.length === 0) return;
     let img = URL.createObjectURL(event.target.files[0]);
     if (img !== null) {
       setArrImg([...arrImg, img]);
@@ -276,6 +277,7 @@ function InformacionPaciente() {
                       id="imgs"
                       type="file"
                       className="hidden"
+                      multiple
                       onChange={imageUploadHandler}
                     ></input>
                   </form>

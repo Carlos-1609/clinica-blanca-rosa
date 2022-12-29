@@ -25,6 +25,7 @@ const Pacientes = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [filteredPacientes, setFilteredPacientes] = useState([]);
   const [isEditable, setIsEditable] = useState(true);
+  const [nombre, setNombre] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loadPacientes = useLoadPacientes();
@@ -37,14 +38,16 @@ const Pacientes = () => {
   }, [pacientes]);
 
   const searchHandler = debounce((searchValue) => {
-    let filter = pacientes.filter((paciente) => {
-      return paciente.nombre
-        .toLowerCase()
-        .trim()
-        .includes(searchValue.toLowerCase().trim());
-    });
-    setFilteredPacientes(filter);
-  }, 500);
+    // let filter = pacientes.filter((paciente) => {
+    //   return paciente.nombre
+    //     .toLowerCase()
+    //     .trim()
+    //     .includes(searchValue.toLowerCase().trim());
+    // });
+    // setFilteredPacientes(filter);
+    setNombre(searchValue);
+    dispatch(startLoadingPacientes(searchValue));
+  }, 800);
 
   // const onNext = (type) => {
   //   dispatch(startLoadingPacientes(type));
@@ -56,7 +59,9 @@ const Pacientes = () => {
       <div className="bg-white h-screen flex items-center justify-center flex-col">
         <div className="mb-7 xl:w-96 md:mt-10 mt-20">
           <input
-            onChange={(e) => searchHandler(e.target.value)}
+            onChange={(e) => {
+              searchHandler(e.target.value);
+            }}
             type="text"
             className="
                 form-control
@@ -225,15 +230,26 @@ const Pacientes = () => {
                   ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
                   : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
               }`}
-              onClick={() => dispatch(onBackPacientes())}
+              onClick={() => dispatch(onBackPacientes(nombre))}
             >
               Anterior
             </button>
           </div>
           <div>
-            <button
+            {/* <button
               className="transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff] hover:bg-[#7f00ff] hover:text-white hover:border-white font-semibold"
               onClick={() => dispatch(onNextPacientes())}
+            >
+              Siguiente
+            </button> */}
+            <button
+              disabled={pacientes.length <= 0 ? true : false}
+              className={`${
+                pacientes.length <= 0
+                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+                  : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+              }`}
+              onClick={() => dispatch(onNextPacientes(nombre))}
             >
               Siguiente
             </button>

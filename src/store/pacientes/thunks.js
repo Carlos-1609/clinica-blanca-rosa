@@ -9,6 +9,7 @@ import {
   query,
   setDoc,
   startAfter,
+  where,
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import {
@@ -20,6 +21,7 @@ import {
   setFirstPaciente,
   setLastPaciente,
   setPacientes,
+  setSaving,
   subCounter,
   updatePaciente,
 } from "./pacientesSlice";
@@ -59,7 +61,7 @@ export const startNewPaciente = (info) => {
   };
 };
 
-export const startLoadingPacientes = (type = "") => {
+export const startLoadingPacientes = (nombre = "") => {
   return async (dispatch, getState) => {
     try {
       const { uid } = getState().auth;
@@ -68,7 +70,13 @@ export const startLoadingPacientes = (type = "") => {
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente`
       );
-      let q = query(collectionRef, orderBy("nombre"), limit(5));
+      let q = query(
+        collectionRef,
+        where("nombre", ">=", nombre),
+        where("nombre", "<=", nombre + "\uf8ff"),
+        orderBy("nombre"),
+        limit(5)
+      );
 
       const pacientes = [];
       const docs = await getDocs(q);
@@ -83,6 +91,14 @@ export const startLoadingPacientes = (type = "") => {
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const startUploadingFiles = (files = []) => {
+  return async (dispatch, getState) => {
+    dispatch(setSaving());
+
+    console.log(files);
   };
 };
 
@@ -107,7 +123,7 @@ export const startUpdatePaciente = (updatedPaciente) => {
   };
 };
 
-export const onNextPacientes = (fn) => {
+export const onNextPacientes = (nombre = "") => {
   return async (dispatch, getState) => {
     try {
       const { uid } = getState().auth;
@@ -116,19 +132,24 @@ export const onNextPacientes = (fn) => {
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente`
       );
+      console.log(nombre);
       let q = query(
         collectionRef,
+        where("nombre", ">=", nombre),
+        where("nombre", "<=", nombre + "\uf8ff"),
         orderBy("nombre"),
-        limit(5),
-        startAfter(lastPaciente)
+        startAfter(lastPaciente),
+        limit(5)
       );
 
       const pacientes = [];
       const docs = await getDocs(q);
+      // console.log("Data del boton de next");
+      // console.log(docs);
       if (docs._docs.length === 0) {
+        console.log("Entre al if del boton de next");
         return dispatch(startLoadingPacientes());
       }
-      // console.log(docs._docs[docs._docs.length - 1]);
       dispatch(setLastPaciente(docs._docs[docs._docs.length - 1]));
       dispatch(setFirstPaciente(docs._docs[0]));
       docs.forEach((doc) => {
@@ -142,7 +163,7 @@ export const onNextPacientes = (fn) => {
   };
 };
 
-export const onBackPacientes = (fn) => {
+export const onBackPacientes = (nombre = "") => {
   return async (dispatch, getState) => {
     try {
       const { uid } = getState().auth;
@@ -153,6 +174,8 @@ export const onBackPacientes = (fn) => {
       );
       let q = query(
         collectionRef,
+        where("nombre", ">=", nombre),
+        where("nombre", "<=", nombre + "\uf8ff"),
         orderBy("nombre"),
         limitToLast(5),
         endBefore(firstPaciente)
@@ -160,9 +183,10 @@ export const onBackPacientes = (fn) => {
 
       const pacientes = [];
       const docs = await getDocs(q);
+      console.log("Data del boton de back");
       console.log(docs);
       if (docs._docs.length === 0) {
-        console.log("entre al if");
+        console.log("Entre al if del boton de back");
         return dispatch(startLoadingPacientes());
       }
       // console.log(docs._docs[docs._docs.length - 1]);
