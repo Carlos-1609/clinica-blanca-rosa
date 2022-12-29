@@ -1,5 +1,6 @@
 import { async } from "@firebase/util";
 import { logoutFirebase, signInWithGoogle } from "../../firebase/provider";
+import { clearLogoutPacientes } from "../pacientes/pacientesSlice";
 import { checkingCredentials, login, logout } from "./authSlice";
 
 export const startGoogleSignIn = () => {
@@ -15,6 +16,7 @@ export const startGoogleSignIn = () => {
 export const startLogout = () => {
   return async (dispatch) => {
     await logoutFirebase();
+    dispatch(clearLogoutPacientes());
     dispatch(logout());
   };
 };

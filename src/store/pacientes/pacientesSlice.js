@@ -75,6 +75,16 @@ export const pacientesSlice = createSlice({
     setSaving: (state, action) => {
       state.isSaving = action.payload;
     },
+    clearLogoutPacientes: (state) => {
+      state.isSaving = false;
+      state.messageInsert = "";
+      state.messageSaved = "";
+      state.pacientes = [];
+      state.activePaciente = null;
+      state.firstPaciente = null;
+      state.lastPaciente = null;
+      state.counter = 0;
+    },
   },
 });
 
@@ -93,4 +103,5 @@ export const {
   setCounter,
   setSaving,
   setPhotosPaciente,
+  clearLogoutPacientes,
 } = pacientesSlice.actions;
