@@ -23,6 +23,7 @@ import {
   startUploadingFiles,
 } from "../../store/pacientes/thunks";
 import Swal from "sweetalert2";
+import { Loader } from "../ui/Loader";
 
 const initialValues = {
   identidad: "",
@@ -78,6 +79,7 @@ function InformacionPaciente() {
   return (
     <>
       <NavBar />
+
       <div className="flex justify-center md:mt-28 mt-20">
         <div className="w-full max-w-4xl mx-10">
           <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 mt-8 border">
@@ -215,6 +217,11 @@ function InformacionPaciente() {
           </form>
         </div>
       </div>
+      {isSaving ? (
+        <div className="flex justify-center items-center">
+          <Loader fullScreen={true} />
+        </div>
+      ) : null}
     </>
   );
 }

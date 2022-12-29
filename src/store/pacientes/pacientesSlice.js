@@ -19,7 +19,6 @@ export const pacientesSlice = createSlice({
     },
     addNewEmptyPaciente: (state, action) => {
       state.messageInsert = "";
-      state.isSaving = false;
       state.pacientes.push(action.payload);
       Swal.fire(
         "Paciente Registrado",
@@ -34,6 +33,7 @@ export const pacientesSlice = createSlice({
     },
     setPacientes: (state, action) => {
       state.pacientes = action.payload;
+      state.isSaving = false;
     },
 
     updatePaciente: (state, action) => {
@@ -73,7 +73,7 @@ export const pacientesSlice = createSlice({
       state.counter = 0;
     },
     setSaving: (state, action) => {
-      state.isSaving = true;
+      state.isSaving = action.payload;
     },
   },
 });

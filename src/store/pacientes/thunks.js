@@ -31,6 +31,7 @@ import {
 export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
     try {
+      dispatch(setSaving(true));
       console.log("startNewPaciente");
       dispatch(creatingNewPaciente());
       const newPaciente = {
@@ -56,9 +57,11 @@ export const startNewPaciente = (info) => {
       );
       const setDocResp = await setDoc(newDoc, newPaciente);
       newPaciente.id = newDoc.id;
+      dispatch(setSaving(false));
       dispatch(addNewEmptyPaciente(newPaciente));
     } catch (error) {
       console.log(error);
+      dispatch(setSaving(true));
     }
   };
 };
@@ -66,6 +69,7 @@ export const startNewPaciente = (info) => {
 export const startLoadingPacientes = (nombre = "") => {
   return async (dispatch, getState) => {
     try {
+      dispatch(setSaving(true));
       const { uid } = getState().auth;
       console.log("se empezaron a cargar los pacientes");
       const collectionRef = collection(
@@ -90,8 +94,10 @@ export const startLoadingPacientes = (nombre = "") => {
       console.log(pacientes);
       dispatch(setCounter());
       dispatch(setPacientes(pacientes));
+      dispatch(setSaving(false));
     } catch (error) {
       console.log(error);
+      dispatch(setSaving(false));
     }
   };
 };
@@ -141,6 +147,7 @@ export const startUpdatePaciente = (updatedPaciente) => {
 export const onNextPacientes = (nombre = "") => {
   return async (dispatch, getState) => {
     try {
+      dispatch(setSaving(true));
       const { uid } = getState().auth;
       const { lastPaciente, firstPaciente } = getState().pacientes;
       const collectionRef = collection(
@@ -172,8 +179,10 @@ export const onNextPacientes = (nombre = "") => {
       });
       dispatch(addCounter());
       dispatch(setPacientes(pacientes));
+      dispatch(setSaving(false));
     } catch (error) {
       console.log(error);
+      dispatch(setSaving(false));
     }
   };
 };
@@ -181,6 +190,7 @@ export const onNextPacientes = (nombre = "") => {
 export const onBackPacientes = (nombre = "") => {
   return async (dispatch, getState) => {
     try {
+      dispatch(setSaving(true));
       const { uid } = getState().auth;
       const { firstPaciente, lastPaciente } = getState().pacientes;
       const collectionRef = collection(
@@ -213,8 +223,10 @@ export const onBackPacientes = (nombre = "") => {
       console.log(pacientes);
       dispatch(subCounter());
       dispatch(setPacientes(pacientes));
+      dispatch(setSaving(false));
     } catch (error) {
       console.log(error);
+      dispatch(setSaving(false));
     }
   };
 };
