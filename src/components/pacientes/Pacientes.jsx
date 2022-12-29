@@ -150,7 +150,7 @@ const Pacientes = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredPacientes.map((paciente, index) => {
+                {pacientes.map((paciente, index) => {
                   return (
                     <tr
                       key={paciente.id}

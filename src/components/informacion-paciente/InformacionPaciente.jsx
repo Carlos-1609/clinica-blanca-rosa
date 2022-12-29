@@ -18,7 +18,10 @@ import { registerLocale } from "react-datepicker";
 import { parseISO, format } from "date-fns";
 import es from "date-fns/locale/es";
 import { useDispatch, useSelector } from "react-redux";
-import { startNewPaciente } from "../../store/pacientes/thunks";
+import {
+  startNewPaciente,
+  startUploadingFiles,
+} from "../../store/pacientes/thunks";
 import Swal from "sweetalert2";
 
 const initialValues = {
@@ -59,15 +62,6 @@ function InformacionPaciente() {
   const onHandleFechaChange = (date) => {
     setStartDate(date);
     setFormattedDate(date.toLocaleDateString("es-es"));
-  };
-
-  const imageUploadHandler = (event) => {
-    if (event.target.files.length === 0) return;
-    let img = URL.createObjectURL(event.target.files[0]);
-    if (img !== null) {
-      setArrImg([...arrImg, img]);
-      console.log(arrImg);
-    }
   };
 
   const onClickNewPaciente = (e) => {
@@ -199,12 +193,6 @@ function InformacionPaciente() {
                 onChange={onHandleInputChange}
               />
             </div>
-            <div
-              className="text-4xl text-cyan-500 flex justify-center md:mb-2 mb-5 cursor-pointer"
-              onClick={() => setShowModal(true)}
-            >
-              <FontAwesomeIcon icon={faImages} />
-            </div>
             <div className="flex items-center justify-between">
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -227,72 +215,6 @@ function InformacionPaciente() {
           </form>
         </div>
       </div>
-      {showModal ? (
-        <>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
-            <div className="w-full max-w-4xl mx-10">
-              <div className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10  border ">
-                <h1 className="font-bold text-xl text-center mb-2">
-                  Imagenes del paciente
-                </h1>
-                {arrImg.length === 0 ? (
-                  <div className="flex justify-center flex-col items-center">
-                    <div>
-                      <FontAwesomeIcon
-                        className="text-[200px]"
-                        color="cyan"
-                        icon={faImage}
-                      />
-                    </div>
-                    <div>
-                      <h2 className="font-bold">
-                        Este paciente no tiene imagenes
-                      </h2>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap gap-2 justify-center mx-3 my-3">
-                    {arrImg.map((imagen) => {
-                      return (
-                        <img
-                          key={imagen}
-                          className="h-44 w-44"
-                          src={imagen}
-                          alt="Uploaded Image"
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-
-                <div className="rounded-full bg-cyan-400 h-16 w-16 fixed bottom-4 right-4 ">
-                  <form>
-                    <label
-                      htmlFor="imgs"
-                      className="text-3xl cursor-pointer flex justify-center mt-4"
-                    >
-                      <FontAwesomeIcon color="white" icon={faFolderPlus} />
-                    </label>
-                    <input
-                      id="imgs"
-                      type="file"
-                      className="hidden"
-                      multiple
-                      onChange={imageUploadHandler}
-                    ></input>
-                  </form>
-                </div>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="rounded-full bg-red-500 h-16 w-16 text-3xl fixed bottom-4 left-4"
-                >
-                  <FontAwesomeIcon color="white" icon={faXmark} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : null}
     </>
   );
 }

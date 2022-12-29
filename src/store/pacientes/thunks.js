@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
+import { fileUpload } from "../../helpers/fileUpload";
 import {
   addCounter,
   addNewEmptyPaciente,
@@ -21,6 +22,7 @@ import {
   setFirstPaciente,
   setLastPaciente,
   setPacientes,
+  setPhotosPaciente,
   setSaving,
   subCounter,
   updatePaciente,
@@ -97,8 +99,15 @@ export const startLoadingPacientes = (nombre = "") => {
 export const startUploadingFiles = (files = []) => {
   return async (dispatch, getState) => {
     dispatch(setSaving());
+    // await fileUpload(files[0]);
+    const fileUploadPromises = [];
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file));
+    }
 
-    console.log(files);
+    const photosUrls = await Promise.all(fileUploadPromises);
+    console.log(photosUrls);
+    dispatch(setPhotosPaciente(photosUrls));
   };
 };
 
@@ -106,17 +115,23 @@ export const startUpdatePaciente = (updatedPaciente) => {
   return async (dispatch, getState) => {
     try {
       const { uid } = getState().auth;
+      const { activePaciente } = getState().pacientes;
+      const paciente = {
+        ...updatedPaciente,
+        ["imageUrls"]: [...activePaciente.imageUrls],
+      };
 
-      const pacienteToFireStore = { ...updatedPaciente };
+      const pacienteToFireStore = { ...paciente };
       delete pacienteToFireStore.id;
 
       const docRef = doc(
         FirebaseDB,
-        `${uid}/pacientes/informacion-paciente/${updatedPaciente.id}`
+        `${uid}/pacientes/informacion-paciente/${paciente.id}`
       );
+      console.log(pacienteToFireStore);
       await setDoc(docRef, pacienteToFireStore, { merge: true });
+      dispatch(updatePaciente(paciente));
       dispatch(setActivePaciente(null));
-      dispatch(updatePaciente(updatedPaciente));
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +147,7 @@ export const onNextPacientes = (nombre = "") => {
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente`
       );
-      console.log(nombre);
+      // console.log(nombre);
       let q = query(
         collectionRef,
         where("nombre", ">=", nombre),

@@ -50,6 +50,13 @@ export const pacientesSlice = createSlice({
         "success"
       );
     },
+    setPhotosPaciente: (state, action) => {
+      state.activePaciente.imageUrls = [
+        ...state.activePaciente.imageUrls,
+        ...action.payload,
+      ];
+      state.isSaving = false;
+    },
     setLastPaciente: (state, action) => {
       state.lastPaciente = action.payload;
     },
@@ -85,4 +92,5 @@ export const {
   subCounter,
   setCounter,
   setSaving,
+  setPhotosPaciente,
 } = pacientesSlice.actions;

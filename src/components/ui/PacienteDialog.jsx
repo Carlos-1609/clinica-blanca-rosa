@@ -6,7 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faImage } from "@fortawesome/free-regular-svg-icons";
 import { faFolderPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import FormInput from "./FormInput";
-import { startUpdatePaciente } from "../../store/pacientes/thunks";
+import {
+  startUpdatePaciente,
+  startUploadingFiles,
+} from "../../store/pacientes/thunks";
 
 export const PacienteDialog = (props) => {
   const initialValues = {
@@ -30,7 +33,7 @@ export const PacienteDialog = (props) => {
   const [arrImg, setArrImg] = useState([]);
   const [values, setValues] = useState(initialValues);
   const [sexo, setSexo] = useState("");
-  const { isSaving } = useSelector((state) => state.pacientes);
+  const { isSaving, activePaciente } = useSelector((state) => state.pacientes);
   const dispatch = useDispatch();
 
   const onHandleInputChange = (e) => {
@@ -49,15 +52,17 @@ export const PacienteDialog = (props) => {
   };
 
   const imageUploadHandler = (event) => {
-    let img = URL.createObjectURL(event.target.files[0]);
-    if (img !== null) {
-      setArrImg([...arrImg, img]);
-      console.log(arrImg);
-    }
+    if (event.target.files.length === 0) return;
+    dispatch(startUploadingFiles(event.target.files));
+    console.log(`Aqui estamos en el image handler ::::`);
+    // console.log(activePaciente.imageUrls);
   };
 
   const onClickUpdatePaciente = (e) => {
     e.preventDefault();
+    // console.log(`Aqui estamos en el image handler :::: en el on click`);
+    // console.log(activePaciente.imageUrls);
+    // setValues((values)=> {...values, ["imageUrls"]: [activePaciente.imageUrls] });
     dispatch(startUpdatePaciente(values));
     props.setShowDialog(false);
   };
@@ -228,7 +233,7 @@ export const PacienteDialog = (props) => {
                 <h1 className="font-bold text-xl text-center mb-2">
                   Imagenes del paciente
                 </h1>
-                {arrImg.length === 0 ? (
+                {activePaciente.imageUrls.length === 0 ? (
                   <div className="flex justify-center flex-col items-center">
                     <div>
                       <FontAwesomeIcon
@@ -245,7 +250,7 @@ export const PacienteDialog = (props) => {
                   </div>
                 ) : (
                   <div className="flex flex-wrap gap-2 justify-center mx-3 my-3">
-                    {arrImg.map((imagen) => {
+                    {activePaciente.imageUrls.map((imagen) => {
                       return (
                         <img
                           key={imagen}
@@ -270,6 +275,7 @@ export const PacienteDialog = (props) => {
                       id="imgs"
                       type="file"
                       className="hidden"
+                      multiple
                       onChange={imageUploadHandler}
                     ></input>
                   </form>
