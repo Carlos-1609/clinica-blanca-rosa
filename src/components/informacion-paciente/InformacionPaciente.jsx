@@ -2,27 +2,12 @@ import React, { useEffect, useState } from "react";
 import FormInput from "../ui/FormInput";
 import NavBar from "../ui/NavBar";
 
-//FontAwesome Imports
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImages } from "@fortawesome/free-regular-svg-icons";
-import {
-  faFolderPlus,
-  faXmark,
-  faImage,
-} from "@fortawesome/free-solid-svg-icons";
-
 //Date Picker Imports
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { registerLocale } from "react-datepicker";
-import { parseISO, format } from "date-fns";
-import es from "date-fns/locale/es";
+
 import { useDispatch, useSelector } from "react-redux";
-import {
-  startNewPaciente,
-  startUploadingFiles,
-} from "../../store/pacientes/thunks";
-import Swal from "sweetalert2";
+import { startNewPaciente } from "../../store/pacientes/thunks";
 import { Loader } from "../ui/Loader";
 
 const initialValues = {
