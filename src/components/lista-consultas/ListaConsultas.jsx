@@ -1,20 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Switcher from "../ui/Switcher";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoadConsultas } from "../../hooks/useLoadConsultas";
+import debounce from "lodash.debounce";
+import { Loader } from "../ui/Loader";
+import {
+  onBackConsulta,
+  onNextConsulta,
+  startLoadingConsultas,
+} from "../../store/consultas/thunks";
 
 const ListaConsultas = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { counter, consultas, isSavingConsulta } = useSelector(
+    (state) => state.consultas
+  );
+  const [filteredConsultas, setFilteredConsultas] = useState([]);
+  const [nombre, setNombre] = useState("");
+  const loadConsultas = useLoadConsultas();
+  useEffect(() => {
+    setFilteredConsultas([...consultas]);
+    return () => {
+      searchHandler.cancel();
+    };
+  }, [consultas]);
+
+  const searchHandler = debounce((searchValue) => {
+    // let filter = pacientes.filter((paciente) => {
+    //   return paciente.nombre
+    //     .toLowerCase()
+    //     .trim()
+    //     .includes(searchValue.toLowerCase().trim());
+    // });
+    // setFilteredPacientes(filter);
+    setNombre(searchValue);
+    dispatch(startLoadingConsultas(searchValue));
+  }, 800);
+
   return (
     <>
       <NavBar />
       <div className=" bg-white h-screen flex items-center justify-center flex-col">
         <div className="">
-          <div className="mb-7 xl:w-96 md:mt-10 mr-3 ">
+          <div className="mb-7 xl:w-96 md:mt-10 mt-20">
             <input
+              onChange={(e) => {
+                searchHandler(e.target.value);
+              }}
               type="text"
               className="
                 form-control
@@ -38,159 +76,126 @@ const ListaConsultas = () => {
             />
           </div>
         </div>
-
-        <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
-          <table className=" w-full mb-0">
-            <thead className="bg-[#333333] border-b ">
-              <tr className="">
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  ID Consulta
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Nombre
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Fecha
-                </th>
-                <th
-                  scope="col"
-                  className="text-md font-mono text-white px-6 py-4 text-left"
-                >
-                  Accion
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="bg-[#F9F9F9] border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  1
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Carlos Alberto Ordoñez Aguero
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  12-19-2022
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
-                </td>
-              </tr>
-              <tr className="bg-white border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  2
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Jacob
-                </td>
-
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  12-19-2022
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <div className="flex gap-10 ">
-                    <div
-                      className="text-xl text-cyan-500 cursor-pointer"
-                      onClick={() => navigate("/consulta")}
+        {isSavingConsulta ? (
+          <Loader />
+        ) : (
+          <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
+            <table className=" w-full mb-0">
+              <thead className="bg-[#333333] border-b ">
+                <tr className="">
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    ID Consulta
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Nombre
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Fecha
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-md font-mono text-white px-6 py-4 text-left"
+                  >
+                    Accion
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {consultas.map((consulta, index) => {
+                  return (
+                    <tr
+                      key={consulta.id}
+                      className={`${
+                        index % 2 === 0 ? "bg-[#F9F9F9]" : "bg-white"
+                      } border-b`}
                     >
-                      <FontAwesomeIcon icon={faEye} />
-                    </div>
-                    <div
-                      className="text-xl text-yellow-500 cursor-pointer"
-                      onClick={() => navigate("/consulta")}
-                    >
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr className="bg-[#F9F9F9] border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  3
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Mark
-                </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {consulta.id}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {consulta.nombrePaciente}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {consulta.fecha}
+                      </td>
 
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  12-19-2022
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
-                </td>
-              </tr>
-              <tr className="bg-white border-b">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  4
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Jacob
-                </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-7 ">
+                          <div
+                            className="text-xl text-cyan-500 cursor-pointer"
+                            onClick={() => {
+                              // dispatch(setActivePaciente(paciente));
+                              // setIsEditable(true);
+                              // setShowDialog(!showDialog);
+                              //navigate("/informacion_paciente");
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faEye} />
+                          </div>
+                          <div
+                            className="text-xl text-yellow-500 cursor-pointer"
+                            onClick={() => {
+                              // dispatch(setActivePaciente(paciente));
+                              // setIsEditable(false);
+                              // setShowDialog(!showDialog);
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  12-19-2022
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  Agregar, Ver, Actualizar
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="flex justify-center mt-10">
-          <nav aria-label="Page navigation example">
-            <ul className="flex list-style-none">
-              <li className="page-item disabled">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-500 pointer-events-none focus:shadow-none"
-                  href="#"
-                  aria-disabled="true"
-                >
-                  Previous
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  href="#"
-                >
-                  1
-                </a>
-              </li>
-              <li className="page-item active">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-blue-600 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md"
-                  href="#"
-                >
-                  2 <span className="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  href="#"
-                >
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link relative block py-1.5 px-3  border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  href="#"
-                >
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
+        <div className="flex justify-center mt-10 gap-20">
+          <div className="">
+            <button
+              disabled={counter <= 0 ? true : false}
+              className={`${
+                counter <= 0
+                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+                  : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+              }`}
+              onClick={() => dispatch(onBackConsulta(nombre))}
+            >
+              Anterior
+            </button>
+          </div>
+          <div>
+            <button
+              disabled={
+                consultas.length <= 0
+                  ? true
+                  : consultas.length < 5
+                  ? true
+                  : false
+              }
+              className={`${
+                consultas.length <= 0
+                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+                  : consultas.length < 5
+                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+                  : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+              }`}
+              onClick={() => dispatch(onNextConsulta(nombre))}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
     </>

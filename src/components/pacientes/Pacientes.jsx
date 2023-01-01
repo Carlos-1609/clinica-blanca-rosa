@@ -247,9 +247,17 @@ const Pacientes = () => {
               Siguiente
             </button> */}
             <button
-              disabled={pacientes.length <= 0 ? true : false}
+              disabled={
+                pacientes.length <= 0
+                  ? true
+                  : pacientes.length < 5
+                  ? true
+                  : false
+              }
               className={`${
                 pacientes.length <= 0
+                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
+                  : pacientes.length < 5
                   ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
                   : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
               }`}

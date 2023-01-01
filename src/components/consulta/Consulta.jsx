@@ -15,8 +15,8 @@ import { onNextPacientes } from "../../store/pacientes/thunks";
 
 const Consulta = () => {
   const initialValues = {
-    id_paciente: "",
-    nombre_paciente: "",
+    idPaciente: "",
+    nombrePaciente: "",
     fecha: new Date().toLocaleDateString("es-es"),
     motivo: "",
     dm: "",

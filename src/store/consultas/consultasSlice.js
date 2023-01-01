@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
 export const consultasSlice = createSlice({
   name: "consultas",
   initialState: {
@@ -12,8 +13,8 @@ export const consultasSlice = createSlice({
     lastConsulta: null,
     counter: 0,
     consultaInfo: {
-      id_paciente: "",
-      nombre_paciente: "",
+      idPaciente: "",
+      nombrePaciente: "",
       fecha: new Date().toLocaleDateString("es-es"),
       motivo: "",
       dm: "",
@@ -56,13 +57,25 @@ export const consultasSlice = createSlice({
     },
     addNewEmptyConsulta: (state, action) => {
       state.consultas.push(action.payload);
+      Swal.fire(
+        "Consulta Registrada",
+        `La consulta de ${action.payload.nombrePaciente}, fue registrada de manera de exitosa`,
+        "success"
+      );
     },
     setActiveConsulta: (state, action) => {},
-    setConsultas: (state, action) => {},
+    setConsultas: (state, action) => {
+      state.consultas = action.payload;
+      state.isSavingConsulta = false;
+    },
     updateConsulta: (state, action) => {},
 
-    setLastConsulta: (state, action) => {},
-    setFirstConsulta: (state, action) => {},
+    setLastConsulta: (state, action) => {
+      state.lastConsulta = action.payload;
+    },
+    setFirstConsulta: (state, action) => {
+      state.firstConsulta = action.payload;
+    },
     addCounter: (state, action) => {
       state.counter = state.counter + 1;
     },
@@ -80,8 +93,8 @@ export const consultasSlice = createSlice({
     },
     clearConsultaInfo: (state, action) => {
       state.consultaInfo = {
-        id_paciente: "",
-        nombre_paciente: "",
+        idPaciente: "",
+        nombrePaciente: "",
         fecha: new Date().toLocaleDateString("es-es"),
         motivo: "",
         dm: "",
