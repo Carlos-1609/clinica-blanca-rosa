@@ -104,7 +104,7 @@ export const startLoadingPacientes = (nombre = "") => {
 
 export const startUploadingFiles = (files = []) => {
   return async (dispatch, getState) => {
-    dispatch(setSaving());
+    dispatch(setSaving(true));
     // await fileUpload(files[0]);
     const fileUploadPromises = [];
     for (const file of files) {

@@ -5,11 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faImage } from "@fortawesome/free-regular-svg-icons";
 import { faFolderPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+//Carrousel Imports
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 import FormInput from "./FormInput";
+import { Loader } from "./Loader";
 import {
   startUpdatePaciente,
   startUploadingFiles,
 } from "../../store/pacientes/thunks";
+import { setSaving } from "../../store/pacientes/pacientesSlice";
 
 export const PacienteDialog = (props) => {
   const initialValues = {
@@ -54,15 +59,10 @@ export const PacienteDialog = (props) => {
   const imageUploadHandler = (event) => {
     if (event.target.files.length === 0) return;
     dispatch(startUploadingFiles(event.target.files));
-    console.log(`Aqui estamos en el image handler ::::`);
-    // console.log(activePaciente.imageUrls);
   };
 
   const onClickUpdatePaciente = (e) => {
     e.preventDefault();
-    // console.log(`Aqui estamos en el image handler :::: en el on click`);
-    // console.log(activePaciente.imageUrls);
-    // setValues((values)=> {...values, ["imageUrls"]: [activePaciente.imageUrls] });
     dispatch(startUpdatePaciente(values));
     props.setShowDialog(false);
   };
@@ -205,7 +205,9 @@ export const PacienteDialog = (props) => {
             <div className="flex items-center justify-between">
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={() => props.setShowDialog(false)}
+                onClick={() => {
+                  props.setShowDialog(false);
+                }}
               >
                 Cancelar
               </button>
@@ -227,13 +229,33 @@ export const PacienteDialog = (props) => {
       </div>
       {showModal ? (
         <>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
-            <div className="w-full max-w-4xl mx-10">
-              <div className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10 mt-[600px]  border ">
-                <h1 className="font-bold text-xl text-center mb-2">
-                  Imagenes del paciente
-                </h1>
-                {activePaciente.imageUrls.length === 0 ? (
+          {isSaving ? (
+            <Loader fullScreen={true} />
+          ) : (
+            <>
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
+                <div className="w-full max-w-4xl mx-10">
+                  <div className="bg-[#2a2a2b]  shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10   border ">
+                    <h1 className="font-bold text-xl text-center mb-2 text-white">
+                      Imagenes del paciente
+                    </h1>
+                    <Carousel
+                      showArrows={true}
+                      showThumbs={false}
+                      swipeable={true}
+                    >
+                      {activePaciente.imageUrls.map((imagen) => {
+                        return (
+                          <img
+                            className="h-96 w-96 object-contain "
+                            key={imagen}
+                            src={imagen}
+                            alt="Uploaded Image"
+                          />
+                        );
+                      })}
+                    </Carousel>
+                    {/* {activePaciente.imageUrls.length === 0 ? (
                   <div className="flex justify-center flex-col items-center">
                     <div>
                       <FontAwesomeIcon
@@ -261,34 +283,35 @@ export const PacienteDialog = (props) => {
                       );
                     })}
                   </div>
-                )}
-
-                <div className="rounded-full bg-cyan-400 h-16 w-16 fixed bottom-4 right-4 ">
-                  <form>
-                    <label
-                      htmlFor="imgs"
-                      className="text-3xl cursor-pointer flex justify-center mt-4"
+                )} */}
+                    <div className="rounded-full bg-cyan-400 h-16 w-16 fixed bottom-4 right-4 ">
+                      <form>
+                        <label
+                          htmlFor="imgs"
+                          className="text-3xl cursor-pointer flex justify-center mt-4"
+                        >
+                          <FontAwesomeIcon color="white" icon={faFolderPlus} />
+                        </label>
+                        <input
+                          id="imgs"
+                          type="file"
+                          className="hidden"
+                          multiple
+                          onChange={imageUploadHandler}
+                        ></input>
+                      </form>
+                    </div>
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="rounded-full bg-red-500 h-16 w-16 text-3xl fixed bottom-4 left-4"
                     >
-                      <FontAwesomeIcon color="white" icon={faFolderPlus} />
-                    </label>
-                    <input
-                      id="imgs"
-                      type="file"
-                      className="hidden"
-                      multiple
-                      onChange={imageUploadHandler}
-                    ></input>
-                  </form>
+                      <FontAwesomeIcon color="white" icon={faXmark} />
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="rounded-full bg-red-500 h-16 w-16 text-3xl fixed bottom-4 left-4"
-                >
-                  <FontAwesomeIcon color="white" icon={faXmark} />
-                </button>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </>
       ) : null}
     </>
