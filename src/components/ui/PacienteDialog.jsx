@@ -254,6 +254,11 @@ export const PacienteDialog = (props) => {
                         return (
                           <div key={imagen.publicId}>
                             <div>
+                              {/* <FontAwesomeIcon
+                                icon={faTrash}
+                                color="red"
+                                onClick={(e) => deleteImage(e, index)}
+                              /> */}
                               <img
                                 className="h-96 w-96 object-contain "
                                 src={imagen.privateUrl}
