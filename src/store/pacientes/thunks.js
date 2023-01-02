@@ -27,6 +27,7 @@ import {
   subCounter,
   updatePaciente,
 } from "./pacientesSlice";
+import axios from "axios";
 
 export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
@@ -116,6 +117,16 @@ export const startUploadingFiles = (files = []) => {
     dispatch(setPhotosPaciente(photosUrls));
   };
 };
+
+// export const deleteImageCloudinary = (index) => {
+//   return async (dispatch, getState) => {
+//     const { activePaciente } = getState().pacientes;
+//     console.log(index);
+//     let idToDelete = activePaciente.imageUrls[index].publicId;
+//     console.log(idToDelete);
+//     cloudinary.v2;
+//   };
+// };
 
 export const startUpdatePaciente = (updatedPaciente) => {
   return async (dispatch, getState) => {

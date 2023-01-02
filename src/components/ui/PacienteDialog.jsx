@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 //FontAwesome Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages, faImage } from "@fortawesome/free-regular-svg-icons";
-import { faFolderPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFolderPlus,
+  faXmark,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 //Carrousel Imports
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -14,7 +18,6 @@ import {
   startUpdatePaciente,
   startUploadingFiles,
 } from "../../store/pacientes/thunks";
-import { setSaving } from "../../store/pacientes/pacientesSlice";
 
 export const PacienteDialog = (props) => {
   const initialValues = {
@@ -65,6 +68,9 @@ export const PacienteDialog = (props) => {
     e.preventDefault();
     dispatch(startUpdatePaciente(values));
     props.setShowDialog(false);
+  };
+  const deleteImage = async (e, index) => {
+    // console.log(activePaciente.imageUrls[index].publicId);
   };
 
   return (
@@ -244,14 +250,17 @@ export const PacienteDialog = (props) => {
                       showThumbs={false}
                       swipeable={true}
                     >
-                      {activePaciente.imageUrls.map((imagen) => {
+                      {activePaciente.imageUrls.map((imagen, index) => {
                         return (
-                          <img
-                            className="h-96 w-96 object-contain "
-                            key={imagen}
-                            src={imagen}
-                            alt="Uploaded Image"
-                          />
+                          <div key={imagen.publicId}>
+                            <div>
+                              <img
+                                className="h-96 w-96 object-contain "
+                                src={imagen.privateUrl}
+                                alt="Uploaded Image"
+                              />
+                            </div>
+                          </div>
                         );
                       })}
                     </Carousel>
