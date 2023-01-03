@@ -1,5 +1,5 @@
 import { Menu } from "@headlessui/react";
-import profileImage from "../../assets/profile.png";
+import profileImage from "../../../public/assets/profile.png";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -5,7 +5,7 @@ import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import patientRecord from "../../assets/medicalrecords.png";
+import patientRecord from "../../../public/assets/medicalrecords.png";
 import { useLoadPacientes } from "../../hooks/useLoadPacientes";
 import debounce from "lodash.debounce";
 import { setActivePaciente } from "../../store/pacientes/pacientesSlice";

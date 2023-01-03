@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import ImageForm from "../../assets/registration-form.png";
+import ImageForm from "../../../public/assets/registration-form.png";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

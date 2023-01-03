@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/glasses.png";
+import Logo from "../../../public/assets/glasses.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //FontAwesome Imports
