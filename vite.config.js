@@ -13,7 +13,7 @@ export default defineConfig({
         description: "App description",
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest,jsx}"],
       },
     }),
   ],
