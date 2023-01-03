@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
-import patientRecord from "../../../public/assets/medicalrecords.png";
+import patientRecord from "../../assets/medicalrecords.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoadConsultas } from "../../hooks/useLoadConsultas";
 import debounce from "lodash.debounce";
