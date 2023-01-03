@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
-import Switcher from "../ui/Switcher";
+import patientRecord from "../../assets/medicalrecords.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoadConsultas } from "../../hooks/useLoadConsultas";
 import debounce from "lodash.debounce";
@@ -86,91 +86,102 @@ const ListaConsultas = () => {
           <Loader />
         ) : (
           <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
-            <table className=" w-full mb-0">
-              <thead className="bg-[#333333] border-b ">
-                <tr className="">
-                  <th
-                    scope="col"
-                    className="text-md font-mono text-white px-6 py-4 text-left"
-                  >
-                    ID Consulta
-                  </th>
-                  <th
-                    scope="col"
-                    className="text-md font-mono text-white px-6 py-4 text-left"
-                  >
-                    Nombre
-                  </th>
-                  <th
-                    scope="col"
-                    className="text-md font-mono text-white px-6 py-4 text-left"
-                  >
-                    Fecha
-                  </th>
-                  <th
-                    scope="col"
-                    className="text-md font-mono text-white px-6 py-4 text-left"
-                  >
-                    Accion
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {consultas.map((consulta, index) => {
-                  return (
-                    <tr
-                      key={consulta.id}
-                      className={`${
-                        index % 2 === 0 ? "bg-[#F9F9F9]" : "bg-white"
-                      } border-b`}
+            {consultas.length === 0 ? (
+              <div className="flex justify-center flex-col items-center">
+                <div className="h-20 w-20 ">
+                  <img src={patientRecord} alt="" />
+                </div>
+                <div className="p-3 font-mono font-bold">
+                  <h2>No existen consultas</h2>
+                </div>
+              </div>
+            ) : (
+              <table className=" w-full mb-0">
+                <thead className="bg-[#333333] border-b ">
+                  <tr className="">
+                    <th
+                      scope="col"
+                      className="text-md font-mono text-white px-6 py-4 text-left"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {consulta.id}
-                      </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        {consulta.nombrePaciente}
-                      </td>
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        {consulta.fecha}
-                      </td>
+                      ID Consulta
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-md font-mono text-white px-6 py-4 text-left"
+                    >
+                      Nombre
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-md font-mono text-white px-6 py-4 text-left"
+                    >
+                      Fecha
+                    </th>
+                    <th
+                      scope="col"
+                      className="text-md font-mono text-white px-6 py-4 text-left"
+                    >
+                      Accion
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {consultas.map((consulta, index) => {
+                    return (
+                      <tr
+                        key={consulta.id}
+                        className={`${
+                          index % 2 === 0 ? "bg-[#F9F9F9]" : "bg-white"
+                        } border-b`}
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {consulta.id}
+                        </td>
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                          {consulta.nombrePaciente}
+                        </td>
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                          {consulta.fecha}
+                        </td>
 
-                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                        <div className="flex gap-7 ">
-                          <div
-                            className="text-xl text-cyan-500 cursor-pointer"
-                            onClick={() => {
-                              console.log(consulta);
-                              dispatch(setActiveConsulta(consulta));
-                              dispatch(setConsultaInfo(consulta));
-                              dispatch(setTypeAction("view"));
-                              // setIsEditable(true);
-                              // setShowDialog(!showDialog);
-                              navigate("/consulta");
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faEye} />
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                          <div className="flex gap-7 ">
+                            <div
+                              className="text-xl text-cyan-500 cursor-pointer"
+                              onClick={() => {
+                                console.log(consulta);
+                                dispatch(setActiveConsulta(consulta));
+                                dispatch(setConsultaInfo(consulta));
+                                dispatch(setTypeAction("view"));
+                                // setIsEditable(true);
+                                // setShowDialog(!showDialog);
+                                navigate("/consulta");
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faEye} />
+                            </div>
+                            <div
+                              className="text-xl text-yellow-500 cursor-pointer"
+                              onClick={() => {
+                                // dispatch(setActivePaciente(paciente));
+                                // setIsEditable(false);
+                                // setShowDialog(!showDialog);
+                                dispatch(setActiveConsulta(consulta));
+                                dispatch(setConsultaInfo(consulta));
+                                dispatch(setTypeAction("update"));
+                                navigate("/consulta");
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faPenToSquare} />
+                            </div>
                           </div>
-                          <div
-                            className="text-xl text-yellow-500 cursor-pointer"
-                            onClick={() => {
-                              // dispatch(setActivePaciente(paciente));
-                              // setIsEditable(false);
-                              // setShowDialog(!showDialog);
-                              dispatch(setActiveConsulta(consulta));
-                              dispatch(setConsultaInfo(consulta));
-                              dispatch(setTypeAction("update"));
-                              navigate("/consulta");
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faPenToSquare} />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 

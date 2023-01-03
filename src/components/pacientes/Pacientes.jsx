@@ -88,7 +88,7 @@ const Pacientes = () => {
           <Loader />
         ) : (
           <div className="overflow-auto md:w-12/12 w-11/12 rounded shadow-lg ">
-            {filteredPacientes.length === 0 ? (
+            {pacientes.length === 0 ? (
               <div className="flex justify-center flex-col items-center">
                 <div className="h-20 w-20 ">
                   <img src={patientRecord} alt="" />

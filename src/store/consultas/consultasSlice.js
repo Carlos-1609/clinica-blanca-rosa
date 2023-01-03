@@ -153,7 +153,7 @@ export const consultasSlice = createSlice({
         plan: "",
       };
     },
-    clearLogoutPacientes: (state) => {
+    clearLogoutConsultas: (state) => {
       state.isSavingConsulta = false;
       state.messageInsert = "";
       state.messageSaved = "";
@@ -162,6 +162,46 @@ export const consultasSlice = createSlice({
       state.firstConsulta = null;
       state.lastConsulta = null;
       state.counter = 0;
+      state.onBackPage = false;
+      state.typeAction = null;
+      state.consultaInfo = {
+        idPaciente: "",
+        nombrePaciente: "",
+        fecha: new Date().toLocaleDateString("es-es"),
+        motivo: "",
+        dm: "",
+        hta: "",
+        glaucoma: "",
+        trauma_ocular: "",
+        cirugias: "",
+        otros: "",
+        av_sc_od: "",
+        av_sc_os: "",
+        av_ph_od: "",
+        av_ph_os: "",
+        av_cc_od: "",
+        av_cc_os: "",
+        lerca_od: "",
+        lerca_os: "",
+        lenso_od: "",
+        lenso_os: "",
+        lenso_tipo_lente: "",
+        retracto_od: "",
+        retracto_os: "",
+        subjetiva_od: "",
+        subjetiva_os: "",
+        subjetiva_ad: "",
+        kera_od: "",
+        kera_os: "",
+        observaciones: "",
+        avl_od: "",
+        avl_os: "",
+        pio_od: "",
+        pio_os: "",
+        biomicroscopia: "",
+        impresion_diagnostica: "",
+        plan: "",
+      };
     },
   },
 });
@@ -179,7 +219,7 @@ export const {
   subCounter,
   setCounter,
   setSaving,
-  clearLogoutPacientes,
+  clearLogoutConsultas,
   setConsultaInfo,
   clearConsultaInfo,
   setTypeAction,

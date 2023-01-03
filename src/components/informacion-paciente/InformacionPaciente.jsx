@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import { startNewPaciente } from "../../store/pacientes/thunks";
 import { Loader } from "../ui/Loader";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   identidad: "",
@@ -28,19 +29,17 @@ const initialValues = {
 function InformacionPaciente() {
   const [startDate, setStartDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [arrImg, setArrImg] = useState([]);
   const [values, setValues] = useState(initialValues);
   const [sexo, setSexo] = useState("");
   const { isSaving, messageInsert } = useSelector((state) => state.pacientes);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onHandleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const onHandleSexoInputChange = (e) => {
-    console.log(e.target.value);
     setSexo(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -53,6 +52,8 @@ function InformacionPaciente() {
   const onClickNewPaciente = (e) => {
     e.preventDefault();
     dispatch(startNewPaciente({ values, formattedDate }));
+    setValues(initialValues);
+    navigate("/pacientes");
   };
 
   // useEffect(() => {
