@@ -147,6 +147,7 @@ export const startUpdatePaciente = (updatedPaciente) => {
       );
       console.log(pacienteToFireStore);
       await setDoc(docRef, pacienteToFireStore, { merge: true });
+
       dispatch(updatePaciente(paciente));
       dispatch(setActivePaciente(null));
     } catch (error) {

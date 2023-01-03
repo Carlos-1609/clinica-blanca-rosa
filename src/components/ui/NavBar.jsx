@@ -14,7 +14,7 @@ const NavBar = () => {
 
   let links = [
     { name: "Pacientes", path: "/pacientes" },
-    { name: "Paciente", path: "/informacion_paciente" },
+    { name: "Paciente+", path: "/informacion_paciente" },
     { name: "Consultas", path: "/lista_consultas" },
   ];
 

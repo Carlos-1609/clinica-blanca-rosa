@@ -14,6 +14,11 @@ import {
   onNextConsulta,
   startLoadingConsultas,
 } from "../../store/consultas/thunks";
+import {
+  setActiveConsulta,
+  setConsultaInfo,
+  setTypeAction,
+} from "../../store/consultas/consultasSlice";
 
 const ListaConsultas = () => {
   const navigate = useNavigate();
@@ -29,6 +34,7 @@ const ListaConsultas = () => {
     return () => {
       searchHandler.cancel();
     };
+    console.log(consultas);
   }, [consultas]);
 
   const searchHandler = debounce((searchValue) => {
@@ -133,10 +139,13 @@ const ListaConsultas = () => {
                           <div
                             className="text-xl text-cyan-500 cursor-pointer"
                             onClick={() => {
-                              // dispatch(setActivePaciente(paciente));
+                              console.log(consulta);
+                              dispatch(setActiveConsulta(consulta));
+                              dispatch(setConsultaInfo(consulta));
+                              dispatch(setTypeAction("view"));
                               // setIsEditable(true);
                               // setShowDialog(!showDialog);
-                              //navigate("/informacion_paciente");
+                              navigate("/consulta");
                             }}
                           >
                             <FontAwesomeIcon icon={faEye} />
@@ -147,6 +156,10 @@ const ListaConsultas = () => {
                               // dispatch(setActivePaciente(paciente));
                               // setIsEditable(false);
                               // setShowDialog(!showDialog);
+                              dispatch(setActiveConsulta(consulta));
+                              dispatch(setConsultaInfo(consulta));
+                              dispatch(setTypeAction("update"));
+                              navigate("/consulta");
                             }}
                           >
                             <FontAwesomeIcon icon={faPenToSquare} />

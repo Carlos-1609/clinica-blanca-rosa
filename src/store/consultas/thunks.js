@@ -15,12 +15,15 @@ import { FirebaseDB } from "../../firebase/config";
 import {
   addCounter,
   addNewEmptyConsulta,
+  setActiveConsulta,
   setConsultas,
   setCounter,
   setFirstConsulta,
   setLastConsulta,
   setSaving,
+  setTypeAction,
   subCounter,
+  updateConsulta,
 } from "./consultasSlice";
 
 export const startNewConsulta = () => {
@@ -44,10 +47,44 @@ export const startNewConsulta = () => {
       consulta.id = newDoc.id;
       console.log(setDocResp);
       dispatch(setSaving(false));
+      dispatch(setTypeAction(null));
       dispatch(addNewEmptyConsulta(consulta));
     } catch (error) {
       console.log(error);
       dispatch(setSaving(true));
+    }
+  };
+};
+
+export const startUpdateConsulta = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setSaving(true));
+      const { uid } = getState().auth;
+      const { activeConsulta, consultaInfo } = getState().consultas;
+      const consulta = {
+        ...consultaInfo,
+      };
+
+      const consultaToFireStore = { ...consulta };
+      delete consultaToFireStore.id;
+
+      const docRef = doc(
+        FirebaseDB,
+        `${uid}/pacientes/consultas/${consulta.id}`
+      );
+      console.log("esta es la consulta que va a firebase");
+      console.log(consultaToFireStore);
+
+      await setDoc(docRef, consultaToFireStore, { merge: true });
+
+      dispatch(updateConsulta(consulta));
+      dispatch(setActiveConsulta(null));
+      dispatch(setTypeAction(null));
+      dispatch(setSaving(false));
+    } catch (error) {
+      console.log(error);
+      dispatch(setSaving(false));
     }
   };
 };

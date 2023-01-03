@@ -8,12 +8,21 @@ import { faXmark, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearConsultaInfo,
+  setActiveConsulta,
   setConsultaInfo,
+  setOnBackPage,
+  setTypeAction,
+  updateConsulta,
 } from "../../store/consultas/consultasSlice";
-import { startNewConsulta } from "../../store/consultas/thunks";
+import {
+  startNewConsulta,
+  startUpdateConsulta,
+} from "../../store/consultas/thunks";
 
 const FichaMedica = (props) => {
-  const { consultaInfo } = useSelector((state) => state.consultas);
+  const { consultaInfo, typeAction, activeConsulta } = useSelector(
+    (state) => state.consultas
+  );
   const [values, setValues] = useState(consultaInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,11 +32,22 @@ const FichaMedica = (props) => {
   };
   const onCreateNuevaConsulta = (e) => {
     e.preventDefault();
+    console.log("esto es create");
     dispatch(setConsultaInfo(values));
     dispatch(startNewConsulta());
     dispatch(clearConsultaInfo());
+    dispatch(setOnBackPage(false));
     navigate("/lista_consultas");
-    //console.log(values);
+  };
+
+  const onUpdateConsulta = (e) => {
+    e.preventDefault();
+    console.log("esto es update");
+    dispatch(setConsultaInfo(values));
+    dispatch(startUpdateConsulta());
+    dispatch(clearConsultaInfo());
+    dispatch(setOnBackPage(false));
+    navigate("/lista_consultas");
   };
 
   return (
@@ -40,7 +60,9 @@ const FichaMedica = (props) => {
             onClick={() => {
               // navigate(-1);
               console.log(values);
+              dispatch(setOnBackPage(true));
               dispatch(setConsultaInfo(values));
+
               props.setShowFichaMedica(false);
             }}
           />
@@ -50,6 +72,9 @@ const FichaMedica = (props) => {
             icon={faXmark}
             className=""
             onClick={() => {
+              dispatch(setActiveConsulta(null));
+              dispatch(setTypeAction(null));
+              dispatch(setOnBackPage(false));
               dispatch(clearConsultaInfo());
               navigate("/pacientes");
             }}
@@ -68,9 +93,16 @@ const FichaMedica = (props) => {
                 Observaciones
               </label>
               <textarea
+                disabled={
+                  typeAction === null || typeAction === "update" ? false : true
+                }
                 id="observaciones"
                 rows="4"
-                className="shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                className={`shadow block w-full ${
+                  typeAction === null || typeAction === "update"
+                    ? "bg-white"
+                    : "bg-gray-200"
+                } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                 placeholder="..."
                 name="observaciones"
                 value={values.observaciones}
@@ -80,6 +112,11 @@ const FichaMedica = (props) => {
             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
               <div className="flex flex-wrap -mx-3 mb-6">
                 <FormInput
+                  disabled={
+                    typeAction === null || typeAction === "update"
+                      ? false
+                      : true
+                  }
                   id={"avl_od"}
                   placeholder={"OD"}
                   label={"AVL-OD"}
@@ -88,6 +125,11 @@ const FichaMedica = (props) => {
                   onChange={onHandleInputChange}
                 />
                 <FormInput
+                  disabled={
+                    typeAction === null || typeAction === "update"
+                      ? false
+                      : true
+                  }
                   id={"avl_os"}
                   placeholder={"OS"}
                   label={"AVL-OS"}
@@ -96,6 +138,11 @@ const FichaMedica = (props) => {
                   onChange={onHandleInputChange}
                 />
                 <FormInput
+                  disabled={
+                    typeAction === null || typeAction === "update"
+                      ? false
+                      : true
+                  }
                   id={"pio_od"}
                   placeholder={"OD"}
                   label={"PIO-OD"}
@@ -104,6 +151,11 @@ const FichaMedica = (props) => {
                   onChange={onHandleInputChange}
                 />
                 <FormInput
+                  disabled={
+                    typeAction === null || typeAction === "update"
+                      ? false
+                      : true
+                  }
                   id={"pio_os"}
                   placeholder={"OS"}
                   label={"PIO-OS"}
@@ -121,9 +173,16 @@ const FichaMedica = (props) => {
                 Biomicroscopía
               </label>
               <textarea
+                disabled={
+                  typeAction === null || typeAction === "update" ? false : true
+                }
                 id="biomicroscopia"
                 rows="4"
-                className="shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                className={`shadow block w-full ${
+                  typeAction === null || typeAction === "update"
+                    ? "bg-white"
+                    : "bg-gray-200"
+                } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                 placeholder="..."
                 name="biomicroscopia"
                 value={values.biomicroscopia}
@@ -138,9 +197,16 @@ const FichaMedica = (props) => {
                 Impresión Diagnostica
               </label>
               <textarea
+                disabled={
+                  typeAction === null || typeAction === "update" ? false : true
+                }
                 id="impresion_diagnostica"
                 rows="4"
-                className="shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                className={`shadow block w-full ${
+                  typeAction === null || typeAction === "update"
+                    ? "bg-white"
+                    : "bg-gray-200"
+                } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                 placeholder="..."
                 name="impresion_diagnostica"
                 value={values.impresion_diagnostica}
@@ -155,9 +221,16 @@ const FichaMedica = (props) => {
                 Plan
               </label>
               <textarea
+                disabled={
+                  typeAction === null || typeAction === "update" ? false : true
+                }
                 id="plan"
                 rows="4"
-                className="shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                className={`shadow block w-full ${
+                  typeAction === null || typeAction === "update"
+                    ? "bg-white"
+                    : "bg-gray-200"
+                } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                 placeholder="..."
                 name="plan"
                 value={values.plan}
@@ -178,10 +251,21 @@ const FichaMedica = (props) => {
           Cancelar
         </button>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          disabled={
+            typeAction === null || typeAction === "update" ? false : true
+          }
+          className={`${
+            typeAction === null || typeAction === "update"
+              ? "bg-blue-500 hover:bg-blue-700"
+              : "bg-gray-400"
+          }  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
           type="submit"
           onClick={(e) => {
-            onCreateNuevaConsulta(e);
+            if (typeAction === "update") {
+              onUpdateConsulta(e);
+            } else {
+              onCreateNuevaConsulta(e);
+            }
           }}
         >
           Guardar

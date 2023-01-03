@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authSlice } from "./auth/authSlice";
-import { consultasSlice } from "./consultas/consultasSlice";
-import { pacientesSlice } from "./pacientes/pacientesSlice";
+
+import { rootPersistConfig, rootReducer } from "./rootReducer";
+import { persistStore, persistReducer } from "redux-persist";
+
 export const store = configureStore({
-  reducer: {
-    auth: authSlice.reducer,
-    pacientes: pacientesSlice.reducer,
-    consultas: consultasSlice.reducer,
-  },
+  reducer: persistReducer(rootPersistConfig, rootReducer),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
+      immutableCheck: false,
     }),
 });
+
+export const persistor = persistStore(store);

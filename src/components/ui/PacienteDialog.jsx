@@ -298,7 +298,11 @@ export const PacienteDialog = (props) => {
                     })}
                   </div>
                 )} */}
-                    <div className="rounded-full bg-cyan-400 h-16 w-16 fixed bottom-4 right-4 ">
+                    <div
+                      className={`rounded-full ${
+                        !props.isEditable ? "bg-cyan-400" : "bg-gray-400"
+                      } h-16 w-16 fixed bottom-4 right-4`}
+                    >
                       <form>
                         <label
                           htmlFor="imgs"
@@ -307,6 +311,7 @@ export const PacienteDialog = (props) => {
                           <FontAwesomeIcon color="white" icon={faFolderPlus} />
                         </label>
                         <input
+                          disabled={props.isEditable}
                           id="imgs"
                           type="file"
                           className="hidden"

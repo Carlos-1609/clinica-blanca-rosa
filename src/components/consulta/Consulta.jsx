@@ -9,11 +9,14 @@ import FichaMedica from "../ficha-medica/FichaMedica";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearConsultaInfo,
+  setActiveConsulta,
   setConsultaInfo,
+  setOnBackPage,
+  setTypeAction,
 } from "../../store/consultas/consultasSlice";
 import { onNextPacientes } from "../../store/pacientes/thunks";
 
-const Consulta = () => {
+const Consulta = (props) => {
   const initialValues = {
     idPaciente: "",
     nombrePaciente: "",
@@ -54,7 +57,9 @@ const Consulta = () => {
   };
   const [values, setValues] = useState(initialValues);
   const [showFichaMedica, setShowFichaMedica] = useState(false);
-  const { consultaInfo } = useSelector((state) => state.consultas);
+  const { consultaInfo, typeAction, activeConsulta, onBackPage } = useSelector(
+    (state) => state.consultas
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,15 +70,29 @@ const Consulta = () => {
 
   const onNext = (e) => {
     e.preventDefault();
+    dispatch(setOnBackPage(false));
+
     dispatch(setConsultaInfo(values));
-    //console.log(values);
     setShowFichaMedica(true);
   };
 
   useEffect(() => {
-    setValues(consultaInfo);
-    // console.log("se disparo el useEffect");
-  }, [consultaInfo]);
+    if (typeAction === null) {
+      setValues(consultaInfo);
+    } else {
+      if (onBackPage) {
+        console.log("aloha desde el if onbackpage", onBackPage);
+        dispatch(setActiveConsulta(consultaInfo));
+        dispatch(setOnBackPage(false));
+        setValues(consultaInfo);
+      } else {
+        console.log("aloha desde el else de onbackpage", onBackPage);
+        setValues(activeConsulta);
+      }
+    }
+
+    console.log("se disparo el useEffect");
+  }, [consultaInfo, onBackPage]);
 
   return (
     <>
@@ -90,6 +109,9 @@ const Consulta = () => {
                 icon={faXmark}
                 onClick={() => {
                   dispatch(clearConsultaInfo());
+                  dispatch(setActiveConsulta(null));
+                  dispatch(setTypeAction(null));
+                  dispatch(setOnBackPage(false));
                   navigate("/pacientes");
                 }}
               />
@@ -109,10 +131,19 @@ const Consulta = () => {
                     Motivo Consulta
                   </label>
                   <textarea
+                    disabled={
+                      typeAction === null || typeAction === "update"
+                        ? false
+                        : true
+                    }
                     id="motivo"
                     name="motivo"
                     rows="4"
-                    className="shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                    className={`shadow block w-full ${
+                      typeAction === null || typeAction === "update"
+                        ? "bg-white"
+                        : "bg-gray-200"
+                    } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
                     placeholder="..."
                     value={values.motivo}
                     onChange={onHandleInputChange}
@@ -124,6 +155,11 @@ const Consulta = () => {
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"dm"}
                       placeholder={"DM"}
                       label={"DM"}
@@ -132,6 +168,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"hta"}
                       placeholder={"HTA"}
                       label={"HTA"}
@@ -140,6 +181,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"glaucoma"}
                       placeholder={"Glaucoma"}
                       label={"Glaucoma"}
@@ -148,6 +194,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"trauma_ocular"}
                       placeholder={"Trauma Ocular"}
                       label={"Trauma Ocular"}
@@ -156,6 +207,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"cirugias"}
                       placeholder={"Cirugias"}
                       label={"Cirugias"}
@@ -164,6 +220,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"otros"}
                       placeholder={"Otros"}
                       label={"Otros"}
@@ -179,6 +240,11 @@ const Consulta = () => {
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6 ">
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"av_sc_od"}
                       placeholder={"OD"}
                       label={"AV SC - OD"}
@@ -187,6 +253,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"av_sc_os"}
                       placeholder={"OS"}
                       label={"AV SC - OS"}
@@ -196,6 +267,11 @@ const Consulta = () => {
                     />
 
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"av_ph_od"}
                       placeholder={"OD"}
                       label={"AV PH - OD"}
@@ -204,6 +280,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"av_ph_os"}
                       placeholder={"OS"}
                       label={"AV PH - OS"}
@@ -213,6 +294,11 @@ const Consulta = () => {
                     />
 
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"av_cc_od"}
                       placeholder={"OD"}
                       label={"AV CC - OD"}
@@ -221,6 +307,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"av_cc_os"}
                       placeholder={"OS"}
                       label={"AV CC - OS"}
@@ -230,6 +321,11 @@ const Consulta = () => {
                     />
 
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"lerca_od"}
                       placeholder={"OD"}
                       label={"Lerca - OD"}
@@ -238,6 +334,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"lerca_os"}
                       placeholder={"OS"}
                       label={"Lerca - OS"}
@@ -253,6 +354,11 @@ const Consulta = () => {
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"lenso_od"}
                       placeholder={"OD"}
                       label={"OD"}
@@ -261,6 +367,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"lenso_os"}
                       placeholder={"OS"}
                       label={"OS"}
@@ -269,6 +380,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"lenso_tipo_lente"}
                       placeholder={"Tipo de Lente"}
                       label={"Tipo de Lente"}
@@ -284,6 +400,11 @@ const Consulta = () => {
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"retracto_od"}
                       placeholder={"OD"}
                       label={"OD"}
@@ -292,6 +413,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"retracto_os"}
                       placeholder={"OS"}
                       label={"OS"}
@@ -307,6 +433,11 @@ const Consulta = () => {
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"subjetiva_od"}
                       placeholder={"OD"}
                       label={"OD"}
@@ -315,6 +446,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"subjetiva_os"}
                       placeholder={"OS"}
                       label={"OS"}
@@ -323,6 +459,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"subjetiva_ad"}
                       placeholder={"AD"}
                       label={"AD"}
@@ -338,6 +479,11 @@ const Consulta = () => {
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"kera_od"}
                       placeholder={"OD"}
                       label={"OD"}
@@ -346,6 +492,11 @@ const Consulta = () => {
                       onChange={onHandleInputChange}
                     />
                     <FormInput
+                      disabled={
+                        typeAction === null || typeAction === "update"
+                          ? false
+                          : true
+                      }
                       id={"kera_os"}
                       placeholder={"OS"}
                       label={"OS"}

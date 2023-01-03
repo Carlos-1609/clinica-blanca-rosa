@@ -5,6 +5,7 @@ export const consultasSlice = createSlice({
   name: "consultas",
   initialState: {
     isSavingConsulta: false,
+    onBackPage: false,
     messageInsert: "",
     messageSaved: "",
     consultas: [],
@@ -12,6 +13,7 @@ export const consultasSlice = createSlice({
     firstConsulta: null,
     lastConsulta: null,
     counter: 0,
+    typeAction: null,
     consultaInfo: {
       idPaciente: "",
       nombrePaciente: "",
@@ -63,12 +65,26 @@ export const consultasSlice = createSlice({
         "success"
       );
     },
-    setActiveConsulta: (state, action) => {},
+    setActiveConsulta: (state, action) => {
+      state.activeConsulta = action.payload;
+    },
     setConsultas: (state, action) => {
       state.consultas = action.payload;
       state.isSavingConsulta = false;
     },
-    updateConsulta: (state, action) => {},
+    updateConsulta: (state, action) => {
+      state.consultas = state.consultas.map((consulta) => {
+        if (consulta.id === action.payload.id) {
+          return action.payload;
+        }
+        return consulta;
+      });
+      Swal.fire(
+        "Consulta Actualizada",
+        `La consulta del paciente ${action.payload.nombrePaciente}, fue actualizada de manera de exitosa`,
+        "success"
+      );
+    },
 
     setLastConsulta: (state, action) => {
       state.lastConsulta = action.payload;
@@ -85,11 +101,17 @@ export const consultasSlice = createSlice({
     setCounter: (state, action) => {
       state.counter = 0;
     },
+    setTypeAction: (state, action) => {
+      state.typeAction = action.payload;
+    },
     setSaving: (state, action) => {
       state.isSavingConsulta = action.payload;
     },
     setConsultaInfo: (state, action) => {
       state.consultaInfo = action.payload;
+    },
+    setOnBackPage: (state, action) => {
+      state.onBackPage = action.payload;
     },
     clearConsultaInfo: (state, action) => {
       state.consultaInfo = {
@@ -160,4 +182,6 @@ export const {
   clearLogoutPacientes,
   setConsultaInfo,
   clearConsultaInfo,
+  setTypeAction,
+  setOnBackPage,
 } = consultasSlice.actions;
