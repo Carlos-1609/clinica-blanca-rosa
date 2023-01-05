@@ -52,7 +52,7 @@ const FichaMedica = (props) => {
 
   return (
     <>
-      <div className="flex justify-between pr-4 text-3xl pl-4 mt-1">
+      <div className="flex justify-between pr-4 text-4xl pl-4 mt-1">
         <span className="text-[#7f00ff]">
           <FontAwesomeIcon
             icon={faArrowLeft}
@@ -76,7 +76,7 @@ const FichaMedica = (props) => {
               dispatch(setTypeAction(null));
               dispatch(setOnBackPage(false));
               dispatch(clearConsultaInfo());
-              navigate("/pacientes");
+              navigate("/lista_consultas");
             }}
           />
         </span>
@@ -246,6 +246,7 @@ const FichaMedica = (props) => {
           onClick={(e) => {
             e.preventDefault();
             dispatch(clearConsultaInfo());
+            navigate("/lista_consultas");
           }}
         >
           Cancelar

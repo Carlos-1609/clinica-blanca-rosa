@@ -103,7 +103,7 @@ const Consulta = (props) => {
         />
       ) : (
         <>
-          <div className="flex justify-end pr-4 text-3xl mt-1">
+          <div className="flex justify-end pr-4 text-4xl mt-1">
             <span className="text-[#7f00ff]">
               <FontAwesomeIcon
                 icon={faXmark}
@@ -112,7 +112,7 @@ const Consulta = (props) => {
                   dispatch(setActiveConsulta(null));
                   dispatch(setTypeAction(null));
                   dispatch(setOnBackPage(false));
-                  navigate("/pacientes");
+                  navigate("/lista_consultas");
                 }}
               />
             </span>
