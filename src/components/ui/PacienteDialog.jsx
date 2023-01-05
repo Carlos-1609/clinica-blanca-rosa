@@ -59,6 +59,13 @@ export const PacienteDialog = (props) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const onHandleEdadInputChange = (e) => {
+    const edadValidated = e.target.value.replace(/\D/g, "");
+
+    setEscolaridad(edadValidated);
+    setValues({ ...values, [e.target.name]: edadValidated });
+  };
+
   const onHandleFechaChange = (date) => {
     setStartDate(date);
     setFormattedDate(date.toLocaleDateString("es-es"));
@@ -118,7 +125,7 @@ export const PacienteDialog = (props) => {
                 placeholder={"Edad"}
                 label={"Edad"}
                 value={values.edad}
-                onChange={onHandleInputChange}
+                onChange={onHandleEdadInputChange}
                 disabled={props.isEditable}
               />
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">

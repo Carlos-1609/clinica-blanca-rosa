@@ -31,6 +31,7 @@ function InformacionPaciente() {
   const [formattedDate, setFormattedDate] = useState("");
   const [values, setValues] = useState(initialValues);
   const [sexo, setSexo] = useState("");
+  const [edad, setEdad] = useState("");
   const [escolaridad, setEscolaridad] = useState("");
   const { isSaving, messageInsert } = useSelector((state) => state.pacientes);
   const dispatch = useDispatch();
@@ -48,6 +49,13 @@ function InformacionPaciente() {
   const onHandleEscolaridadInputChange = (e) => {
     setEscolaridad(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const onHandleEdadInputChange = (e) => {
+    const edadValidated = e.target.value.replace(/\D/g, "");
+
+    setEscolaridad(edadValidated);
+    setValues({ ...values, [e.target.name]: edadValidated });
   };
 
   const onHandleFechaChange = (date) => {
@@ -103,7 +111,7 @@ function InformacionPaciente() {
                 placeholder={"Edad"}
                 label={"Edad"}
                 value={values.edad}
-                onChange={onHandleInputChange}
+                onChange={onHandleEdadInputChange}
               />
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
                 <label
@@ -202,14 +210,7 @@ function InformacionPaciente() {
                 onChange={onHandleInputChange}
               />
             </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-                onClick={(e) => e.preventDefault()}
-              >
-                Cancelar
-              </button>
+            <div className="flex items-center justify-end">
               <button
                 disabled={isSaving}
                 className={`${
