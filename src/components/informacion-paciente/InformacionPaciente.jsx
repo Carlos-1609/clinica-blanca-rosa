@@ -31,6 +31,7 @@ function InformacionPaciente() {
   const [formattedDate, setFormattedDate] = useState("");
   const [values, setValues] = useState(initialValues);
   const [sexo, setSexo] = useState("");
+  const [escolaridad, setEscolaridad] = useState("");
   const { isSaving, messageInsert } = useSelector((state) => state.pacientes);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ function InformacionPaciente() {
 
   const onHandleSexoInputChange = (e) => {
     setSexo(e.target.value);
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const onHandleEscolaridadInputChange = (e) => {
+    setEscolaridad(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -121,14 +127,29 @@ function InformacionPaciente() {
                   <option>Otro</option>
                 </select>
               </div>
-              <FormInput
-                name={"escolaridad"}
-                id={"escolaridad"}
-                placeholder={"Escolaridad"}
-                label={"Escolaridad"}
-                value={values.escolaridad}
-                onChange={onHandleInputChange}
-              />
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
+                  htmlFor="escolaridad"
+                >
+                  Escolaridad
+                </label>
+                <select
+                  name="escolaridad"
+                  className="appearance-none uppercase shadow block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]"
+                  id="escolaridad"
+                  defaultValue={"DEFAULT"}
+                  onChange={onHandleEscolaridadInputChange}
+                >
+                  <option value="DEFAULT" disabled>
+                    Seleccione Escolaridad
+                  </option>
+                  <option>Primaria</option>
+                  <option>Secundaria</option>
+                  <option>Superior</option>
+                </select>
+              </div>
+
               <FormInput
                 id={"domicilio"}
                 name={"domicilio"}

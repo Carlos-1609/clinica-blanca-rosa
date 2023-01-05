@@ -40,6 +40,7 @@ export const PacienteDialog = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [arrImg, setArrImg] = useState([]);
   const [values, setValues] = useState(initialValues);
+  const [escolaridad, setEscolaridad] = useState("");
   const [sexo, setSexo] = useState("");
   const { isSaving, activePaciente } = useSelector((state) => state.pacientes);
   const dispatch = useDispatch();
@@ -53,6 +54,10 @@ export const PacienteDialog = (props) => {
     setSexo(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+  const onHandleEscolaridadInputChange = (e) => {
+    setEscolaridad(e.target.value);
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
   const onHandleFechaChange = (date) => {
     setStartDate(date);
@@ -61,6 +66,11 @@ export const PacienteDialog = (props) => {
 
   const imageUploadHandler = (event) => {
     if (event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    if (!/^image\//.test(file.type)) {
+      alert(`File ${file.name} no es una imagen.`);
+      return false;
+    }
     dispatch(startUploadingFiles(event.target.files));
   };
 
@@ -131,6 +141,28 @@ export const PacienteDialog = (props) => {
                   <option>Masculino</option>
                   <option>Femenino</option>
                   <option>Otro</option>
+                </select>
+              </div>
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
+                  htmlFor="escolaridad"
+                >
+                  Escolaridad
+                </label>
+                <select
+                  disabled={props.isEditable}
+                  name="escolaridad"
+                  className={`appearance-none uppercase shadow block w-full ${
+                    !props.isEditable ? "bg-white" : "bg-gray-200"
+                  } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
+                  id="escolaridad"
+                  defaultValue={values.escolaridad}
+                  onChange={onHandleEscolaridadInputChange}
+                >
+                  <option>Primaria</option>
+                  <option>Secundaria</option>
+                  <option>Superior</option>
                 </select>
               </div>
               <FormInput
@@ -314,6 +346,7 @@ export const PacienteDialog = (props) => {
                           disabled={props.isEditable}
                           id="imgs"
                           type="file"
+                          accept="image/*"
                           className="hidden"
                           multiple
                           onChange={imageUploadHandler}

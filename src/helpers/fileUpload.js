@@ -45,7 +45,6 @@ const compressImage = (file) => {
 export const fileUpload = async (file) => {
   if (!file) throw new Error("No tenemos ningun archivo a subir");
   const response = await compressImage(file);
-  // console.log("Este es el secure url de la promesa", secureUrl);
   return { publicId: response.public_id, privateUrl: response.secure_url };
 
   // console.log("este es el url");
