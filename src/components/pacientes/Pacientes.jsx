@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus, faEye } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFolderPlus,
+  faEye,
+  faLayerGroup,
+} from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -214,6 +218,15 @@ const Pacientes = () => {
                               }}
                             >
                               <FontAwesomeIcon icon={faPenToSquare} />
+                            </div>
+                            <div
+                              className="text-xl text-sky-900 cursor-pointer"
+                              onClick={() => {
+                                dispatch(setActivePaciente(paciente));
+                                navigate("/lista_consultas");
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faLayerGroup} />
                             </div>
                           </div>
                         </td>

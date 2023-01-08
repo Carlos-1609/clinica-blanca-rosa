@@ -30,7 +30,7 @@ export const startNewConsulta = () => {
   return async (dispatch, getState) => {
     try {
       dispatch(setSaving(true));
-      console.log("Start new Consulta");
+      // console.log("Start new Consulta");
       const { consultaInfo } = getState().consultas;
       const { uid } = getState().auth;
       const { activePaciente } = getState().pacientes;
@@ -41,11 +41,11 @@ export const startNewConsulta = () => {
       };
 
       const consulta = { ...consultaInfo, ...infoPaciente };
-      console.log({ ...consultaInfo, ...infoPaciente });
+      // console.log({ ...consultaInfo, ...infoPaciente });
       const newDoc = doc(collection(FirebaseDB, `${uid}/pacientes/consultas`));
       const setDocResp = await setDoc(newDoc, consulta);
       consulta.id = newDoc.id;
-      console.log(setDocResp);
+      // console.log(setDocResp);
       dispatch(setSaving(false));
       dispatch(setTypeAction(null));
       dispatch(addNewEmptyConsulta(consulta));
@@ -73,8 +73,8 @@ export const startUpdateConsulta = () => {
         FirebaseDB,
         `${uid}/pacientes/consultas/${consulta.id}`
       );
-      console.log("esta es la consulta que va a firebase");
-      console.log(consultaToFireStore);
+      // console.log("esta es la consulta que va a firebase");
+      // console.log(consultaToFireStore);
 
       await setDoc(docRef, consultaToFireStore, { merge: true });
 
@@ -89,11 +89,13 @@ export const startUpdateConsulta = () => {
   };
 };
 
-export const startLoadingConsultas = (nombre = "") => {
+export const startLoadingConsultas = (fecha = "") => {
   return async (dispatch, getState) => {
     try {
+      //ZRa2y2ClfsiZTldNBgKB
       dispatch(setSaving(true));
       const { uid } = getState().auth;
+      const { activePaciente } = getState().pacientes;
       console.log("se empezaron a cargar las consultas");
       const collectionRef = collection(
         FirebaseDB,
@@ -101,9 +103,8 @@ export const startLoadingConsultas = (nombre = "") => {
       );
       let q = query(
         collectionRef,
-        where("nombrePaciente", ">=", nombre),
-        where("nombrePaciente", "<=", nombre + "\uf8ff"),
-        orderBy("nombrePaciente"),
+        where("idPaciente", "==", activePaciente.id),
+        orderBy("fecha"),
         limit(5)
       );
 
@@ -114,7 +115,7 @@ export const startLoadingConsultas = (nombre = "") => {
       docs.forEach((doc) => {
         consultas.push({ id: doc.id, ...doc.data() });
       });
-      console.log(consultas);
+      // console.log(consultas);
       dispatch(setCounter());
       dispatch(setConsultas(consultas));
       dispatch(setSaving(false));
@@ -131,24 +132,25 @@ export const onNextConsulta = (nombre = "") => {
       dispatch(setSaving(true));
       const { uid } = getState().auth;
       const { lastConsulta, firstConsulta } = getState().consultas;
+      const { activePaciente } = getState().pacientes;
+
       const collectionRef = collection(
         FirebaseDB,
         `${uid}/pacientes/consultas`
       );
-      // console.log(nombre);
+      console.log(activePaciente.id);
       let q = query(
         collectionRef,
-        where("nombrePaciente", ">=", nombre),
-        where("nombrePaciente", "<=", nombre + "\uf8ff"),
-        orderBy("nombrePaciente"),
+        where("idPaciente", "==", activePaciente.id),
+        orderBy("fecha"),
         startAfter(lastConsulta),
         limit(5)
       );
 
       const consultas = [];
       const docs = await getDocs(q);
-      // console.log("Data del boton de next");
-      // console.log(docs);
+      console.log("Data del boton de next");
+      console.log(docs);
       if (docs._docs.length === 0) {
         console.log("Entre al if del boton de next");
         return dispatch(startLoadingConsultas());
@@ -174,25 +176,25 @@ export const onBackConsulta = (nombre = "") => {
       dispatch(setSaving(true));
       const { uid } = getState().auth;
       const { lastConsulta, firstConsulta } = getState().consultas;
+      const { activePaciente } = getState().pacientes;
       const collectionRef = collection(
         FirebaseDB,
         `${uid}/pacientes/consultas`
       );
       let q = query(
         collectionRef,
-        where("nombrePaciente", ">=", nombre),
-        where("nombrePaciente", "<=", nombre + "\uf8ff"),
-        orderBy("nombrePaciente"),
+        where("idPaciente", "==", activePaciente.id),
+        orderBy("fecha"),
         limitToLast(5),
         endBefore(firstConsulta)
       );
 
       const consultas = [];
       const docs = await getDocs(q);
-      console.log("Data del boton de back");
-      console.log(docs);
+      // console.log("Data del boton de back");
+      // console.log(docs);
       if (docs._docs.length === 0) {
-        console.log("Entre al if del boton de back");
+        // console.log("Entre al if del boton de back");
         return dispatch(startLoadingConsultas());
       }
       // console.log(docs._docs[docs._docs.length - 1]);

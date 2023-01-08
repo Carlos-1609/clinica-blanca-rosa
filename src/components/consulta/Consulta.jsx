@@ -328,7 +328,7 @@ const Consulta = (props) => {
                       }
                       id={"lerca_od"}
                       placeholder={"OD"}
-                      label={"Lerca - OD"}
+                      label={"Cerca - OD"}
                       name={"lerca_od"}
                       value={values.lerca_od}
                       onChange={onHandleInputChange}
@@ -341,7 +341,7 @@ const Consulta = (props) => {
                       }
                       id={"lerca_os"}
                       placeholder={"OS"}
-                      label={"Lerca - OS"}
+                      label={"Cerca - OS"}
                       name={"lerca_os"}
                       value={values.lerca_os}
                       onChange={onHandleInputChange}
@@ -396,7 +396,7 @@ const Consulta = (props) => {
                 </form>
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border">
                   <h1 className="font-bold text-xl text-center mb-4 sm:mb-0">
-                    Auto retracto metro / objetiva
+                    Auto refractometro / objetiva
                   </h1>
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <FormInput

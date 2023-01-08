@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 import patientRecord from "../../assets/medicalrecords.png";
@@ -26,62 +26,16 @@ const ListaConsultas = () => {
   const { counter, consultas, isSavingConsulta } = useSelector(
     (state) => state.consultas
   );
-  const [filteredConsultas, setFilteredConsultas] = useState([]);
   const [nombre, setNombre] = useState("");
   const loadConsultas = useLoadConsultas();
-  useEffect(() => {
-    setFilteredConsultas([...consultas]);
-    return () => {
-      searchHandler.cancel();
-    };
-    console.log(consultas);
-  }, [consultas]);
-
-  const searchHandler = debounce((searchValue) => {
-    // let filter = pacientes.filter((paciente) => {
-    //   return paciente.nombre
-    //     .toLowerCase()
-    //     .trim()
-    //     .includes(searchValue.toLowerCase().trim());
-    // });
-    // setFilteredPacientes(filter);
-    setNombre(searchValue);
-    dispatch(startLoadingConsultas(searchValue));
-  }, 800);
+  const addConsulta = () =>{
+    navigate('/consulta');
+  }
 
   return (
     <>
       <NavBar />
       <div className=" bg-white h-screen flex items-center justify-center flex-col">
-        <div className="">
-          <div className="mb-7 xl:w-96 md:mt-10 mt-20">
-            <input
-              onChange={(e) => {
-                searchHandler(e.target.value);
-              }}
-              type="text"
-              className="
-                form-control
-                rounded-md
-                shadow-md
-                block
-                w-full
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding
-                border border-solid border-gray-300
-                transition
-                ease-in-out
-                m-0
-                focus:text-gray-700 focus:bg-white focus:border-[#7f00ff] focus:outline-none"
-              id="buscarPaciente"
-              placeholder="Paciente"
-            />
-          </div>
-        </div>
         {isSavingConsulta ? (
           <Loader />
         ) : (
@@ -219,6 +173,13 @@ const ListaConsultas = () => {
             >
               Siguiente
             </button>
+          </div>
+        </div>
+        <div className="absolute bottom-2 right-2 ">
+          <div onClick={addConsulta} className="cursor-pointer transition ease-in-out delay-50 hover:bg-green-900 bg-green-500 rounded-full h-16 w-16 sticky flex justify-center items-center" >
+            <div className=" text-white text-3xl ">
+              <FontAwesomeIcon icon={faFolderPlus} />
+            </div>
           </div>
         </div>
       </div>
