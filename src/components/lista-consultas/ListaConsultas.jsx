@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faFolderPlus,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 import patientRecord from "../../assets/medicalrecords.png";
@@ -10,6 +14,7 @@ import { useLoadConsultas } from "../../hooks/useLoadConsultas";
 import debounce from "lodash.debounce";
 import { Loader } from "../ui/Loader";
 import {
+  deleteConsulta,
   onBackConsulta,
   onNextConsulta,
   startLoadingConsultas,
@@ -19,8 +24,11 @@ import {
   setConsultaInfo,
   setTypeAction,
 } from "../../store/consultas/consultasSlice";
+import DeleteAlert from "../ui/deleteAlert";
 
 const ListaConsultas = () => {
+  const [deletePopUp, setDeletePopUp] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { counter, consultas, isSavingConsulta } = useSelector(
@@ -28,9 +36,14 @@ const ListaConsultas = () => {
   );
   const [nombre, setNombre] = useState("");
   const loadConsultas = useLoadConsultas();
-  const addConsulta = () =>{
-    navigate('/consulta');
-  }
+  const addConsulta = () => {
+    navigate("/consulta");
+  };
+
+  const onDeleteConsulta = () => {
+    dispatch(deleteConsulta());
+    setDeletePopUp(false);
+  };
 
   return (
     <>
@@ -128,6 +141,17 @@ const ListaConsultas = () => {
                             >
                               <FontAwesomeIcon icon={faPenToSquare} />
                             </div>
+
+                            <div
+                              className="text-xl text-red-500 cursor-pointer"
+                              onClick={() => {
+                                // setDeletePopUp(true);
+                                setDeletePopUp(true);
+                                dispatch(setActiveConsulta(consulta));
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
+                            </div>
                           </div>
                         </td>
                       </tr>
@@ -176,13 +200,47 @@ const ListaConsultas = () => {
           </div>
         </div>
         <div className="absolute bottom-2 right-2 ">
-          <div onClick={addConsulta} className="cursor-pointer transition ease-in-out delay-50 hover:bg-green-900 bg-green-500 rounded-full h-16 w-16 sticky flex justify-center items-center" >
+          <div
+            onClick={addConsulta}
+            className="cursor-pointer transition ease-in-out delay-50 hover:bg-green-900 bg-green-500 rounded-full h-16 w-16 sticky flex justify-center items-center"
+          >
             <div className=" text-white text-3xl ">
               <FontAwesomeIcon icon={faFolderPlus} />
             </div>
           </div>
         </div>
       </div>
+      {deletePopUp && (
+        <div className=" fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
+          <div className="w-full max-w-4xl mx-10">
+            <div className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10 border ">
+              <h1 className="font-bold text-xl text-center mb-4">
+                ¿Esta Seguro(a) que quieres eliminar la consulta del paciente?
+              </h1>
+              <div className="flex justify-center gap-16 ">
+                <div>
+                  <button
+                    onClick={onDeleteConsulta}
+                    className="bg-green-600 rounded-md w-32 h-12 shadow-md hover:bg-green-500 transition ease-in text-white font-bold"
+                  >
+                    Si, Eliminar
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => {
+                      setDeletePopUp(false);
+                    }}
+                    className="bg-red-600 rounded-md w-32 h-12 shadow-md hover:bg-red-400 transition ease-in text-white font-bold "
+                  >
+                    No, Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

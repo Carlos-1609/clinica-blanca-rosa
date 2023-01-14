@@ -10,11 +10,13 @@ import {
   startAfter,
   limitToLast,
   endBefore,
+  deleteDoc,
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import {
   addCounter,
   addNewEmptyConsulta,
+  deleteConsultaById,
   setActiveConsulta,
   setConsultas,
   setCounter,
@@ -88,6 +90,26 @@ export const startUpdateConsulta = () => {
     }
   };
 };
+
+export const deleteConsulta = () => {
+  return async (dispatch, getState)=>{
+    try {
+      dispatch(setSaving(true));
+      const { uid } = getState().auth;
+      const { activeConsulta } = getState().consultas;
+      // console.log({uid, activeConsulta});
+      const docRef = doc(FirebaseDB,`${uid}/pacientes/consultas/${activeConsulta.id}`);
+      await deleteDoc(docRef);
+
+      dispatch(deleteConsultaById(activeConsulta.id));
+      dispatch(setSaving(false));
+    } catch (error) {
+      console.log(error);
+      dispatch(setSaving(false));
+    }
+  }
+}
+
 
 export const startLoadingConsultas = (fecha = "") => {
   return async (dispatch, getState) => {

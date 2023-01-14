@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../ui/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faTrashCan,
   faFolderPlus,
   faEye,
   faLayerGroup,
@@ -227,6 +228,12 @@ const Pacientes = () => {
                               }}
                             >
                               <FontAwesomeIcon icon={faLayerGroup} />
+                            </div>
+                            <div
+                              className="text-xl text-red-500 cursor-pointer"
+                              onClick={() => {}}
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
                             </div>
                           </div>
                         </td>

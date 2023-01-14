@@ -84,6 +84,14 @@ export const startLoadingPacientes = (nombre = "") => {
         orderBy("nombre"),
         limit(5)
       );
+      // let q = query(
+      //   collectionRef,
+      //   orderBy("fecha", "desc"),
+      //   limit(5)
+      // );
+
+
+      
 
       const pacientes = [];
       const docs = await getDocs(q);
@@ -155,6 +163,7 @@ export const startUpdatePaciente = (updatedPaciente) => {
     }
   };
 };
+
 
 export const onNextPacientes = (nombre = "") => {
   return async (dispatch, getState) => {

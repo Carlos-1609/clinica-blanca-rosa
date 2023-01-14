@@ -86,6 +86,16 @@ export const consultasSlice = createSlice({
       );
     },
 
+    deleteConsultaById: (state, action)=>{
+      state.activeConsulta = null;
+      state.consultas = state.consultas.filter(consulta => consulta.id !== action.payload)
+      Swal.fire(
+        "Consulta Eliminada",
+        `La consulta fue eliminada de manera de exitosa`,
+        "success"
+      );
+    },
+
     setLastConsulta: (state, action) => {
       state.lastConsulta = action.payload;
     },
@@ -224,4 +234,5 @@ export const {
   clearConsultaInfo,
   setTypeAction,
   setOnBackPage,
+  deleteConsultaById
 } = consultasSlice.actions;
