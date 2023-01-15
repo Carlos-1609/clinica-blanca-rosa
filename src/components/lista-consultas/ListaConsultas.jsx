@@ -179,17 +179,9 @@ const ListaConsultas = () => {
           </div>
           <div>
             <button
-              disabled={
-                consultas.length <= 0
-                  ? true
-                  : consultas.length < 5
-                  ? true
-                  : false
-              }
+              disabled={consultas.length <= 0 ? true : false}
               className={`${
                 consultas.length <= 0
-                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
-                  : consultas.length < 5
                   ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
                   : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
               }`}

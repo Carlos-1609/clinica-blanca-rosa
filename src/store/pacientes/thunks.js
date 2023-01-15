@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   endBefore,
   getDocs,
@@ -17,6 +18,7 @@ import {
   addCounter,
   addNewEmptyPaciente,
   creatingNewPaciente,
+  deletePacienteById,
   setActivePaciente,
   setCounter,
   setFirstPaciente,
@@ -89,10 +91,6 @@ export const startLoadingPacientes = (nombre = "") => {
       //   orderBy("fecha", "desc"),
       //   limit(5)
       // );
-
-
-      
-
       const pacientes = [];
       const docs = await getDocs(q);
       dispatch(setLastPaciente(docs._docs[docs._docs.length - 1]));
@@ -164,6 +162,41 @@ export const startUpdatePaciente = (updatedPaciente) => {
   };
 };
 
+export const deletePaciente = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setSaving(true));
+      const { uid } = getState().auth;
+      const { activePaciente } = getState().pacientes;
+
+      const docRef = doc(
+        FirebaseDB,
+        `${uid}/pacientes/informacion-paciente/${activePaciente.id}`
+      );
+
+      const collectionRef = collection(
+        FirebaseDB,
+        `${uid}/pacientes/consultas`
+      );
+
+      let q = query(
+        collectionRef,
+        where("idPaciente", "==", activePaciente.id)
+      );
+      const docs = await getDocs(q);
+      docs.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+      console.log(docRef);
+      await deleteDoc(docRef);
+      dispatch(deletePacienteById(activePaciente.id));
+      dispatch(setSaving(false));
+    } catch (error) {
+      console.log(error);
+      dispatch(setSaving(false));
+    }
+  };
+};
 
 export const onNextPacientes = (nombre = "") => {
   return async (dispatch, getState) => {

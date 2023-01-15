@@ -18,6 +18,7 @@ import { PacienteDialog } from "../ui/PacienteDialog";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import {
+  deletePaciente,
   onBackPacientes,
   onNextPacientes,
   startLoadingPacientes,
@@ -28,6 +29,7 @@ const Pacientes = () => {
   const { pacientes, activePaciente, messageSaved, counter, isSaving } =
     useSelector((state) => state.pacientes);
   const [showDialog, setShowDialog] = useState(false);
+  const [deletePopUp, setDeletePopUp] = useState(false);
   const [filteredPacientes, setFilteredPacientes] = useState([]);
   const [isEditable, setIsEditable] = useState(true);
   const [nombre, setNombre] = useState("");
@@ -43,20 +45,14 @@ const Pacientes = () => {
   }, [pacientes]);
 
   const searchHandler = debounce((searchValue) => {
-    // let filter = pacientes.filter((paciente) => {
-    //   return paciente.nombre
-    //     .toLowerCase()
-    //     .trim()
-    //     .includes(searchValue.toLowerCase().trim());
-    // });
-    // setFilteredPacientes(filter);
     setNombre(searchValue);
     dispatch(startLoadingPacientes(searchValue));
   }, 800);
 
-  // const onNext = (type) => {
-  //   dispatch(startLoadingPacientes(type));
-  // };
+  const onDeletePaciente = () => {
+    dispatch(deletePaciente());
+    setDeletePopUp(false);
+  };
 
   return (
     <>
@@ -231,7 +227,10 @@ const Pacientes = () => {
                             </div>
                             <div
                               className="text-xl text-red-500 cursor-pointer"
-                              onClick={() => {}}
+                              onClick={() => {
+                                dispatch(setActivePaciente(paciente));
+                                setDeletePopUp(true);
+                              }}
                             >
                               <FontAwesomeIcon icon={faTrashCan} />
                             </div>
@@ -267,17 +266,9 @@ const Pacientes = () => {
               Siguiente
             </button> */}
             <button
-              disabled={
-                pacientes.length <= 0
-                  ? true
-                  : pacientes.length < 5
-                  ? true
-                  : false
-              }
+              disabled={pacientes.length <= 0 ? true : false}
               className={`${
                 pacientes.length <= 0
-                  ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
-                  : pacientes.length < 5
                   ? "opacity-40 transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
                   : "hover:bg-[#7f00ff] hover:text-white transition ease-in-out delay-50 bg-white shadow-lg h-11 w-24 border-[#7f00ff] rounded-lg border-2 text-[#7f00ff]  font-semibold "
               }`}
@@ -294,6 +285,38 @@ const Pacientes = () => {
           activePaciente={activePaciente}
           isEditable={isEditable}
         />
+      )}
+      {deletePopUp && (
+        <div className=" fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm overflow-y-scroll">
+          <div className="w-full max-w-4xl mx-10">
+            <div className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 md:mt-10 border ">
+              <h1 className="font-bold text-xl text-center mb-4">
+                ¿Esta Seguro(a) que quieres eliminar al paciente y sus
+                consultas?
+              </h1>
+              <div className="flex justify-center gap-16 ">
+                <div>
+                  <button
+                    onClick={onDeletePaciente}
+                    className="bg-green-600 rounded-md w-32 h-12 shadow-md hover:bg-green-500 transition ease-in text-white font-bold"
+                  >
+                    Si, Eliminar
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => {
+                      setDeletePopUp(false);
+                    }}
+                    className="bg-red-600 rounded-md w-32 h-12 shadow-md hover:bg-red-400 transition ease-in text-white font-bold "
+                  >
+                    No, Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

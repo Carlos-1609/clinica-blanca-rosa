@@ -50,6 +50,17 @@ export const pacientesSlice = createSlice({
         "success"
       );
     },
+    deletePacienteById: (state, action) => {
+      state.activeConsulta = null;
+      state.pacientes = state.pacientes.filter(
+        (paciente) => paciente.id !== action.payload
+      );
+      Swal.fire(
+        "Paciente Eliminado",
+        `El paciente fue eliminado de manera de exitosa`,
+        "success"
+      );
+    },
     setPhotosPaciente: (state, action) => {
       state.activePaciente.imageUrls = [
         ...state.activePaciente.imageUrls,
@@ -104,4 +115,5 @@ export const {
   setSaving,
   setPhotosPaciente,
   clearLogoutPacientes,
+  deletePacienteById,
 } = pacientesSlice.actions;
