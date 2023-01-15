@@ -35,7 +35,6 @@ export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
     try {
       dispatch(setSaving(true));
-      console.log("startNewPaciente");
       dispatch(creatingNewPaciente());
       const newPaciente = {
         identidad: info.values.identidad,
@@ -51,6 +50,8 @@ export const startNewPaciente = (info) => {
         ocupacion: info.values.ocupacion,
         email: info.values.email,
         imageUrls: info.values.imageUrls,
+        seguro: info.values.seguro,
+        motivo: info.values.motivo,
       };
 
       console.log(newPaciente);
@@ -74,7 +75,6 @@ export const startLoadingPacientes = (nombre = "") => {
     try {
       dispatch(setSaving(true));
       const { uid } = getState().auth;
-      console.log("se empezaron a cargar los pacientes");
       const collectionRef = collection(
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente`
@@ -98,7 +98,6 @@ export const startLoadingPacientes = (nombre = "") => {
       docs.forEach((doc) => {
         pacientes.push({ id: doc.id, ...doc.data() });
       });
-      console.log(pacientes);
       dispatch(setCounter());
       dispatch(setPacientes(pacientes));
       dispatch(setSaving(false));
@@ -151,7 +150,6 @@ export const startUpdatePaciente = (updatedPaciente) => {
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente/${paciente.id}`
       );
-      console.log(pacienteToFireStore);
       await setDoc(docRef, pacienteToFireStore, { merge: true });
 
       dispatch(updatePaciente(paciente));
@@ -208,7 +206,6 @@ export const onNextPacientes = (nombre = "") => {
         FirebaseDB,
         `${uid}/pacientes/informacion-paciente`
       );
-      // console.log(nombre);
       let q = query(
         collectionRef,
         where("nombre", ">=", nombre),
@@ -223,7 +220,6 @@ export const onNextPacientes = (nombre = "") => {
       // console.log("Data del boton de next");
       // console.log(docs);
       if (docs._docs.length === 0) {
-        console.log("Entre al if del boton de next");
         return dispatch(startLoadingPacientes());
       }
       dispatch(setLastPaciente(docs._docs[docs._docs.length - 1]));
@@ -265,7 +261,6 @@ export const onBackPacientes = (nombre = "") => {
       console.log("Data del boton de back");
       console.log(docs);
       if (docs._docs.length === 0) {
-        console.log("Entre al if del boton de back");
         return dispatch(startLoadingPacientes());
       }
       // console.log(docs._docs[docs._docs.length - 1]);

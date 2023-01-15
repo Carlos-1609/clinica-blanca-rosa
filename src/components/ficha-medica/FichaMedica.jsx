@@ -32,7 +32,6 @@ const FichaMedica = (props) => {
   };
   const onCreateNuevaConsulta = (e) => {
     e.preventDefault();
-    console.log("esto es create");
     dispatch(setConsultaInfo(values));
     dispatch(startNewConsulta());
     dispatch(clearConsultaInfo());
@@ -42,7 +41,6 @@ const FichaMedica = (props) => {
 
   const onUpdateConsulta = (e) => {
     e.preventDefault();
-    console.log("esto es update");
     dispatch(setConsultaInfo(values));
     dispatch(startUpdateConsulta());
     dispatch(clearConsultaInfo());
@@ -59,7 +57,7 @@ const FichaMedica = (props) => {
             className=""
             onClick={() => {
               // navigate(-1);
-              console.log(values);
+              // console.log(values);
               dispatch(setOnBackPage(true));
               dispatch(setConsultaInfo(values));
 

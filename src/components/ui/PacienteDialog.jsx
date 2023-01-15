@@ -34,6 +34,8 @@ export const PacienteDialog = (props) => {
     ocupacion: props.activePaciente.ocupacion,
     email: props.activePaciente.email,
     imageUrls: [...props.activePaciente.imageUrls],
+    seguro: props.activePaciente.seguro,
+    motivo: props.activePaciente.motivo,
   };
   const [startDate, setStartDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
@@ -240,6 +242,35 @@ export const PacienteDialog = (props) => {
                 onChange={onHandleInputChange}
                 disabled={props.isEditable}
               />
+              <FormInput
+                id={"seguro"}
+                name={"seguro"}
+                placeholder={"Seguro Medico"}
+                label={"Seguro Medico"}
+                value={values.seguro}
+                onChange={onHandleInputChange}
+                disabled={props.isEditable}
+              />
+            </div>
+            <div className="flex flex-wrap  mb-3">
+              <label
+                htmlFor="motivo_consulta"
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
+              >
+                Motivo Consulta
+              </label>
+              <textarea
+                disabled={props.isEditable}
+                id="motivo"
+                name="motivo"
+                rows="4"
+                className={`shadow block w-full ${
+                  !props.isEditable ? "bg-white" : "bg-gray-200"
+                } text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
+                placeholder="..."
+                value={values.motivo}
+                onChange={onHandleInputChange}
+              ></textarea>
             </div>
             <div
               className="text-4xl text-cyan-500 flex justify-center md:mb-2 mb-5 cursor-pointer"

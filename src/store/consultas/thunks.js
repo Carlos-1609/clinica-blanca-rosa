@@ -92,13 +92,16 @@ export const startUpdateConsulta = () => {
 };
 
 export const deleteConsulta = () => {
-  return async (dispatch, getState)=>{
+  return async (dispatch, getState) => {
     try {
       dispatch(setSaving(true));
       const { uid } = getState().auth;
       const { activeConsulta } = getState().consultas;
       // console.log({uid, activeConsulta});
-      const docRef = doc(FirebaseDB,`${uid}/pacientes/consultas/${activeConsulta.id}`);
+      const docRef = doc(
+        FirebaseDB,
+        `${uid}/pacientes/consultas/${activeConsulta.id}`
+      );
       await deleteDoc(docRef);
 
       dispatch(deleteConsultaById(activeConsulta.id));
@@ -107,9 +110,8 @@ export const deleteConsulta = () => {
       console.log(error);
       dispatch(setSaving(false));
     }
-  }
-}
-
+  };
+};
 
 export const startLoadingConsultas = (fecha = "") => {
   return async (dispatch, getState) => {
@@ -118,7 +120,6 @@ export const startLoadingConsultas = (fecha = "") => {
       dispatch(setSaving(true));
       const { uid } = getState().auth;
       const { activePaciente } = getState().pacientes;
-      console.log("se empezaron a cargar las consultas");
       const collectionRef = collection(
         FirebaseDB,
         `${uid}/pacientes/consultas`
@@ -174,7 +175,6 @@ export const onNextConsulta = (nombre = "") => {
       console.log("Data del boton de next");
       console.log(docs);
       if (docs._docs.length === 0) {
-        console.log("Entre al if del boton de next");
         return dispatch(startLoadingConsultas());
       }
       dispatch(setLastConsulta(docs._docs[docs._docs.length - 1]));

@@ -81,17 +81,13 @@ const Consulta = (props) => {
       setValues(consultaInfo);
     } else {
       if (onBackPage) {
-        console.log("aloha desde el if onbackpage", onBackPage);
         dispatch(setActiveConsulta(consultaInfo));
         dispatch(setOnBackPage(false));
         setValues(consultaInfo);
       } else {
-        console.log("aloha desde el else de onbackpage", onBackPage);
         setValues(activeConsulta);
       }
     }
-
-    console.log("se disparo el useEffect");
   }, [consultaInfo, onBackPage]);
 
   return (

@@ -24,6 +24,8 @@ const initialValues = {
   ocupacion: "",
   email: "",
   imageUrls: [],
+  seguro: "",
+  motivo: "",
 };
 
 function InformacionPaciente() {
@@ -69,12 +71,6 @@ function InformacionPaciente() {
     setValues(initialValues);
     navigate("/pacientes");
   };
-
-  // useEffect(() => {
-  //   if (messageInsert.length > 0) {
-  //     Swal.fire("Paciente Registrado", messageInsert, "success");
-  //   }
-  // }, [messageInsert]);
 
   return (
     <>
@@ -209,6 +205,31 @@ function InformacionPaciente() {
                 value={values.email}
                 onChange={onHandleInputChange}
               />
+              <FormInput
+                id={"seguro"}
+                name={"seguro"}
+                placeholder={"Seguro Medico"}
+                label={"Seguro Medico"}
+                value={values.seguro}
+                onChange={onHandleInputChange}
+              />
+            </div>
+            <div className="flex flex-wrap  mb-3">
+              <label
+                htmlFor="motivo_consulta"
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 md:mt-2 "
+              >
+                Motivo Consulta
+              </label>
+              <textarea
+                id="motivo"
+                name="motivo"
+                rows="4"
+                className={`shadow block w-full ${"bg-white"} text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:shadow-outline focus:border-[#7f00ff]`}
+                placeholder="..."
+                value={values.motivo}
+                onChange={onHandleInputChange}
+              ></textarea>
             </div>
             <div className="flex items-center justify-end">
               <button
