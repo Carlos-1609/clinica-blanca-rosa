@@ -4,7 +4,7 @@ import FormInput from "../ui/FormInput";
 
 //FontAwesome Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import FichaMedica from "../ficha-medica/FichaMedica";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,6 +15,7 @@ import {
   setTypeAction,
 } from "../../store/consultas/consultasSlice";
 import { onNextPacientes } from "../../store/pacientes/thunks";
+import { PacienteDialog } from "../ui/PacienteDialog";
 
 const Consulta = (props) => {
   const initialValues = {
@@ -57,9 +58,11 @@ const Consulta = (props) => {
   };
   const [values, setValues] = useState(initialValues);
   const [showFichaMedica, setShowFichaMedica] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const { consultaInfo, typeAction, activeConsulta, onBackPage } = useSelector(
     (state) => state.consultas
   );
+  const { activePaciente } = useSelector((state) => state.pacientes);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -99,8 +102,14 @@ const Consulta = (props) => {
         />
       ) : (
         <>
-          <div className="flex justify-end pr-4 text-4xl mt-1">
-            <span className="text-[#7f00ff]">
+          <div className="flex justify-between pr-4 text-4xl mt-1">
+            <span
+              className="text-[#7f00ff] cursor-pointer ml-3"
+              onClick={() => setShowDialog(true)}
+            >
+              <FontAwesomeIcon icon={faUserCircle} />
+            </span>
+            <span className="text-[#7f00ff] cursor-pointer">
               <FontAwesomeIcon
                 icon={faXmark}
                 onClick={() => {
@@ -515,6 +524,13 @@ const Consulta = (props) => {
               Siguiente
             </button>
           </div>
+          {showDialog && (
+            <PacienteDialog
+              setShowDialog={setShowDialog}
+              activePaciente={activePaciente}
+              isEditable={true}
+            />
+          )}
         </>
       )}
     </>

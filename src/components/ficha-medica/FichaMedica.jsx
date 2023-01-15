@@ -4,7 +4,11 @@ import FormInput from "../ui/FormInput";
 
 //FontAwesome Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faXmark,
+  faArrowLeft,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearConsultaInfo,
@@ -18,12 +22,16 @@ import {
   startNewConsulta,
   startUpdateConsulta,
 } from "../../store/consultas/thunks";
+import { PacienteDialog } from "../ui/PacienteDialog";
 
 const FichaMedica = (props) => {
   const { consultaInfo, typeAction, activeConsulta } = useSelector(
     (state) => state.consultas
   );
+  const { activePaciente } = useSelector((state) => state.pacientes);
+
   const [values, setValues] = useState(consultaInfo);
+  const [showDialog, setShowDialog] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -51,7 +59,7 @@ const FichaMedica = (props) => {
   return (
     <>
       <div className="flex justify-between pr-4 text-4xl pl-4 mt-1">
-        <span className="text-[#7f00ff]">
+        <span className="text-[#7f00ff] cursor-pointer">
           <FontAwesomeIcon
             icon={faArrowLeft}
             className=""
@@ -65,7 +73,13 @@ const FichaMedica = (props) => {
             }}
           />
         </span>
-        <span className="text-[#7f00ff]">
+        <span
+          className="text-[#7f00ff] cursor-pointer ml-3"
+          onClick={() => setShowDialog(true)}
+        >
+          <FontAwesomeIcon icon={faUserCircle} />
+        </span>
+        <span className="text-[#7f00ff] cursor-pointer">
           <FontAwesomeIcon
             icon={faXmark}
             className=""
@@ -270,6 +284,13 @@ const FichaMedica = (props) => {
           Guardar
         </button>
       </div>
+      {showDialog && (
+        <PacienteDialog
+          setShowDialog={setShowDialog}
+          activePaciente={activePaciente}
+          isEditable={true}
+        />
+      )}
     </>
   );
 };
