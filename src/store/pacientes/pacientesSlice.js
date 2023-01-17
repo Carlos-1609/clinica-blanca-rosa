@@ -19,7 +19,7 @@ export const pacientesSlice = createSlice({
     },
     addNewEmptyPaciente: (state, action) => {
       state.messageInsert = "";
-      state.pacientes.push(action.payload);
+      state.pacientes.unshift(action.payload);
       Swal.fire(
         "Paciente Registrado",
         `${action.payload.nombre}, fue registrado de manera de exitosa`,

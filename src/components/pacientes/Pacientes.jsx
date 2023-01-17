@@ -163,28 +163,28 @@ const Pacientes = () => {
                           index % 2 === 0 ? "bg-[#F9F9F9]" : "bg-white"
                         } border-b`}
                       >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 font-mono">
                           {paciente.identidad}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           {paciente.nombre}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           {paciente.edad}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           {paciente.sexo}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           {paciente.telefono}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           {paciente.fecha}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           {paciente.email}
                         </td>
-                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap font-mono">
                           <div className="flex gap-7 ">
                             <div
                               className="text-xl text-green-500 cursor-pointer"
