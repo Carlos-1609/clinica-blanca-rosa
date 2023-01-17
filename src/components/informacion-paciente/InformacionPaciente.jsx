@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startNewPaciente } from "../../store/pacientes/thunks";
 import { Loader } from "../ui/Loader";
 import { useNavigate } from "react-router-dom";
+import { Timestamp } from "firebase/firestore";
 
 const initialValues = {
   identidad: "",
@@ -26,6 +27,7 @@ const initialValues = {
   imageUrls: [],
   seguro: "",
   motivo: "",
+  createdAt: Timestamp.fromDate(new Date()).seconds,
 };
 
 function InformacionPaciente() {

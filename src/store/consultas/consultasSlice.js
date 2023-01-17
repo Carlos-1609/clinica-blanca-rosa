@@ -17,7 +17,7 @@ export const consultasSlice = createSlice({
     consultaInfo: {
       idPaciente: "",
       nombrePaciente: "",
-      fecha: new Date().toLocaleDateString("es-es"),
+      fecha: "",
       motivo: "",
       dm: "",
       hta: "",
@@ -51,6 +51,7 @@ export const consultasSlice = createSlice({
       biomicroscopia: "",
       impresion_diagnostica: "",
       plan: "",
+      createdAt: null,
     },
   },
   reducers: {
@@ -86,9 +87,11 @@ export const consultasSlice = createSlice({
       );
     },
 
-    deleteConsultaById: (state, action)=>{
+    deleteConsultaById: (state, action) => {
       state.activeConsulta = null;
-      state.consultas = state.consultas.filter(consulta => consulta.id !== action.payload)
+      state.consultas = state.consultas.filter(
+        (consulta) => consulta.id !== action.payload
+      );
       Swal.fire(
         "Consulta Eliminada",
         `La consulta fue eliminada de manera de exitosa`,
@@ -127,7 +130,7 @@ export const consultasSlice = createSlice({
       state.consultaInfo = {
         idPaciente: "",
         nombrePaciente: "",
-        fecha: new Date().toLocaleDateString("es-es"),
+        fecha: "",
         motivo: "",
         dm: "",
         hta: "",
@@ -161,6 +164,7 @@ export const consultasSlice = createSlice({
         biomicroscopia: "",
         impresion_diagnostica: "",
         plan: "",
+        createdAt: null,
       };
     },
     clearLogoutConsultas: (state) => {
@@ -177,7 +181,7 @@ export const consultasSlice = createSlice({
       state.consultaInfo = {
         idPaciente: "",
         nombrePaciente: "",
-        fecha: new Date().toLocaleDateString("es-es"),
+        fecha: "",
         motivo: "",
         dm: "",
         hta: "",
@@ -211,6 +215,7 @@ export const consultasSlice = createSlice({
         biomicroscopia: "",
         impresion_diagnostica: "",
         plan: "",
+        createdAt: null,
       };
     },
   },
@@ -234,5 +239,5 @@ export const {
   clearConsultaInfo,
   setTypeAction,
   setOnBackPage,
-  deleteConsultaById
+  deleteConsultaById,
 } = consultasSlice.actions;

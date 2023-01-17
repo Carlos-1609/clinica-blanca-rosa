@@ -52,6 +52,7 @@ export const startNewPaciente = (info) => {
         imageUrls: info.values.imageUrls,
         seguro: info.values.seguro,
         motivo: info.values.motivo,
+        createdAt: info.values.createdAt,
       };
 
       console.log(newPaciente);

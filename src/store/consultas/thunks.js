@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import {
   collection,
   doc,
@@ -32,14 +33,18 @@ export const startNewConsulta = () => {
   return async (dispatch, getState) => {
     try {
       dispatch(setSaving(true));
-      // console.log("Start new Consulta");
+
       const { consultaInfo } = getState().consultas;
       const { uid } = getState().auth;
       const { activePaciente } = getState().pacientes;
 
+      //set las fechas y timestamp de la consulta
+
       const infoPaciente = {
         idPaciente: activePaciente.id,
         nombrePaciente: activePaciente.nombre,
+        createdAt: Timestamp.fromDate(new Date()).seconds,
+        fecha: new Date().toLocaleDateString("es-es"),
       };
 
       const consulta = { ...consultaInfo, ...infoPaciente };

@@ -24,6 +24,7 @@ import {
   startLoadingPacientes,
 } from "../../store/pacientes/thunks";
 import { Loader } from "../ui/Loader";
+import { Timestamp } from "firebase/firestore";
 
 const Pacientes = () => {
   const { pacientes, activePaciente, messageSaved, counter, isSaving } =

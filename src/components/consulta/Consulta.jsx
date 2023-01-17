@@ -16,12 +16,13 @@ import {
 } from "../../store/consultas/consultasSlice";
 import { onNextPacientes } from "../../store/pacientes/thunks";
 import { PacienteDialog } from "../ui/PacienteDialog";
+import { Timestamp } from "firebase/firestore";
 
 const Consulta = (props) => {
   const initialValues = {
     idPaciente: "",
     nombrePaciente: "",
-    fecha: new Date().toLocaleDateString("es-es"),
+    fecha: "",
     motivo: "",
     dm: "",
     hta: "",
@@ -55,6 +56,7 @@ const Consulta = (props) => {
     biomicroscopia: "",
     impresion_diagnostica: "",
     plan: "",
+    createdAt: null,
   };
   const [values, setValues] = useState(initialValues);
   const [showFichaMedica, setShowFichaMedica] = useState(false);
