@@ -116,7 +116,6 @@ const ListaConsultas = () => {
                             <div
                               className="text-xl text-cyan-500 cursor-pointer"
                               onClick={() => {
-                                console.log(consulta);
                                 dispatch(setActiveConsulta(consulta));
                                 dispatch(setConsultaInfo(consulta));
                                 dispatch(setTypeAction("view"));

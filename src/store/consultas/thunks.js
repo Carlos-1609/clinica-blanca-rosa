@@ -110,6 +110,7 @@ export const deleteConsulta = () => {
       await deleteDoc(docRef);
 
       dispatch(deleteConsultaById(activeConsulta.id));
+      dispatch(startLoadingConsultas());
       dispatch(setSaving(false));
     } catch (error) {
       console.log(error);
@@ -132,7 +133,7 @@ export const startLoadingConsultas = (fecha = "") => {
       let q = query(
         collectionRef,
         where("idPaciente", "==", activePaciente.id),
-        orderBy("fecha"),
+        orderBy("createdAt", "desc"),
         limit(5)
       );
 
@@ -166,19 +167,17 @@ export const onNextConsulta = (nombre = "") => {
         FirebaseDB,
         `${uid}/pacientes/consultas`
       );
-      console.log(activePaciente.id);
       let q = query(
         collectionRef,
         where("idPaciente", "==", activePaciente.id),
-        orderBy("fecha"),
+        orderBy("createdAt", "desc"),
         startAfter(lastConsulta),
         limit(5)
       );
 
       const consultas = [];
       const docs = await getDocs(q);
-      console.log("Data del boton de next");
-      console.log(docs);
+
       if (docs._docs.length === 0) {
         return dispatch(startLoadingConsultas());
       }
@@ -211,7 +210,7 @@ export const onBackConsulta = (nombre = "") => {
       let q = query(
         collectionRef,
         where("idPaciente", "==", activePaciente.id),
-        orderBy("fecha"),
+        orderBy("createdAt", "desc"),
         limitToLast(5),
         endBefore(firstConsulta)
       );

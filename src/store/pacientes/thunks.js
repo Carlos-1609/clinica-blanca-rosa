@@ -124,16 +124,6 @@ export const startUploadingFiles = (files = []) => {
   };
 };
 
-// export const deleteImageCloudinary = (index) => {
-//   return async (dispatch, getState) => {
-//     const { activePaciente } = getState().pacientes;
-//     console.log(index);
-//     let idToDelete = activePaciente.imageUrls[index].publicId;
-//     console.log(idToDelete);
-//     cloudinary.v2;
-//   };
-// };
-
 export const startUpdatePaciente = (updatedPaciente) => {
   return async (dispatch, getState) => {
     try {
@@ -189,6 +179,7 @@ export const deletePaciente = () => {
       console.log(docRef);
       await deleteDoc(docRef);
       dispatch(deletePacienteById(activePaciente.id));
+      dispatch(startLoadingPacientes());
       dispatch(setSaving(false));
     } catch (error) {
       console.log(error);
