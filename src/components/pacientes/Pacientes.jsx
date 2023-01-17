@@ -39,11 +39,10 @@ const Pacientes = () => {
   const loadPacientes = useLoadPacientes();
 
   useEffect(() => {
-    setFilteredPacientes([...pacientes]);
     return () => {
       searchHandler.cancel();
     };
-  }, [pacientes]);
+  }, []);
 
   const searchHandler = debounce((searchValue) => {
     setNombre(searchValue);

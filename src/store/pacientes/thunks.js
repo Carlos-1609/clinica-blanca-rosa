@@ -35,7 +35,6 @@ export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
     try {
       dispatch(setSaving(true));
-      dispatch(creatingNewPaciente());
       const newPaciente = {
         identidad: info.values.identidad,
         nombre: info.values.nombre,
@@ -55,7 +54,6 @@ export const startNewPaciente = (info) => {
         createdAt: info.values.createdAt,
       };
 
-      console.log(newPaciente);
       const { uid } = getState().auth;
       const newDoc = doc(
         collection(FirebaseDB, `${uid}/pacientes/informacion-paciente`)
@@ -176,7 +174,6 @@ export const deletePaciente = () => {
       docs.forEach(async (doc) => {
         await deleteDoc(doc.ref);
       });
-      console.log(docRef);
       await deleteDoc(docRef);
       dispatch(deletePacienteById(activePaciente.id));
       dispatch(startLoadingPacientes());
