@@ -62,6 +62,7 @@ export const startNewPaciente = (info) => {
       newPaciente.id = newDoc.id;
       dispatch(setSaving(false));
       dispatch(addNewEmptyPaciente(newPaciente));
+      navigator.clipboard.writeText(info.values.nombre);
     } catch (error) {
       console.log(error);
       dispatch(setSaving(true));

@@ -80,8 +80,6 @@ export const startUpdateConsulta = () => {
         FirebaseDB,
         `${uid}/pacientes/consultas/${consulta.id}`
       );
-      // console.log("esta es la consulta que va a firebase");
-      // console.log(consultaToFireStore);
 
       await setDoc(docRef, consultaToFireStore, { merge: true });
 
