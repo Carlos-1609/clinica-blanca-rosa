@@ -29,7 +29,8 @@ import {
   subCounter,
   updatePaciente,
 } from "./pacientesSlice";
-import axios from "axios";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
 
 export const startNewPaciente = (info) => {
   return async (dispatch, getState) => {
@@ -65,7 +66,12 @@ export const startNewPaciente = (info) => {
       navigator.clipboard.writeText(info.values.nombre);
     } catch (error) {
       console.log(error);
-      dispatch(setSaving(true));
+      dispatch(setSaving(false));
+      Swal.fire(
+        "Ocurrio un error al ingresar el nuevo paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -104,6 +110,11 @@ export const startLoadingPacientes = (nombre = "") => {
     } catch (error) {
       console.log(error);
       dispatch(setSaving(false));
+      Swal.fire(
+        "Ocurrio un error al cargar los pacientes",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -146,6 +157,11 @@ export const startUpdatePaciente = (updatedPaciente) => {
       dispatch(setActivePaciente(null));
     } catch (error) {
       console.log(error);
+      Swal.fire(
+        "Ocurrio un error al actualizar los datos del paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -182,6 +198,11 @@ export const deletePaciente = () => {
     } catch (error) {
       console.log(error);
       dispatch(setSaving(false));
+      Swal.fire(
+        "Ocurrio un error al eliminar al paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -248,8 +269,7 @@ export const onBackPacientes = (nombre = "") => {
 
       const pacientes = [];
       const docs = await getDocs(q);
-      console.log("Data del boton de back");
-      console.log(docs);
+
       if (docs._docs.length === 0) {
         return dispatch(startLoadingPacientes());
       }
@@ -259,7 +279,6 @@ export const onBackPacientes = (nombre = "") => {
       docs.forEach((doc) => {
         pacientes.push({ id: doc.id, ...doc.data() });
       });
-      console.log(pacientes);
       dispatch(subCounter());
       dispatch(setPacientes(pacientes));
       dispatch(setSaving(false));

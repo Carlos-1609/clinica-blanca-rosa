@@ -28,6 +28,8 @@ import {
   subCounter,
   updateConsulta,
 } from "./consultasSlice";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
 
 export const startNewConsulta = () => {
   return async (dispatch, getState) => {
@@ -59,6 +61,11 @@ export const startNewConsulta = () => {
     } catch (error) {
       console.log(error);
       dispatch(setSaving(true));
+      Swal.fire(
+        "Ocurrio un error al ingresar la consulta del paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -90,6 +97,11 @@ export const startUpdateConsulta = () => {
     } catch (error) {
       console.log(error);
       dispatch(setSaving(false));
+      Swal.fire(
+        "Ocurrio un error al actualizar la consulta del paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -113,6 +125,11 @@ export const deleteConsulta = () => {
     } catch (error) {
       console.log(error);
       dispatch(setSaving(false));
+      Swal.fire(
+        "Ocurrio un error al eliminar la consulta del paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };
@@ -149,6 +166,11 @@ export const startLoadingConsultas = (fecha = "") => {
     } catch (error) {
       console.log(error);
       dispatch(setSaving(false));
+      Swal.fire(
+        "Ocurrio un error al cargar las consultas del paciente",
+        `${error}`,
+        "error"
+      );
     }
   };
 };

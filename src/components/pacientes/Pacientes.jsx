@@ -15,7 +15,6 @@ import { useLoadPacientes } from "../../hooks/useLoadPacientes";
 import debounce from "lodash.debounce";
 import { setActivePaciente } from "../../store/pacientes/pacientesSlice";
 import { PacienteDialog } from "../ui/PacienteDialog";
-import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import {
   deletePaciente,
@@ -24,7 +23,6 @@ import {
   startLoadingPacientes,
 } from "../../store/pacientes/thunks";
 import { Loader } from "../ui/Loader";
-import { Timestamp } from "firebase/firestore";
 
 const Pacientes = () => {
   const { pacientes, activePaciente, messageSaved, counter, isSaving } =
